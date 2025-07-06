@@ -11,14 +11,13 @@ const ChatHeader = () => {
     const tags = ['Support', 'Sales', 'Internal'];
     const dispatch = useDispatch();
 
+
+
     const handleChange = (e) => {
         const value = e.target.value;
+        if (currentConversation.tag === value) return;
         setSelectedTag(value);
-        const updatedConversation = {
-            ...currentConversation,
-            tag:value
-        }
-        dispatch(updateCurrentConversation(updatedConversation));
+        dispatch(updateCurrentConversation({ ...currentConversation, tag: value }));
     };
 
     const handleDownloadJson = () => {
@@ -35,9 +34,11 @@ const ChatHeader = () => {
         link.click();
     };
 
-    useEffect(()=>{
-        setSelectedTag(currentConversation.tag);
-    },[currentConversation]);
+    useEffect(() => {
+        if (currentConversation?.tag !== selectedTag) {
+            setSelectedTag(currentConversation?.tag || '');
+        }
+    }, [currentConversation, selectedTag]);
 
     return (
         <div className='chat-header-container flex-item'>

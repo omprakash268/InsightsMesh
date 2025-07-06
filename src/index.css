@@ -38,7 +38,7 @@
   --card-bg: #ffffff;
   --card-text: #1f2937;
   --card-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  --grey-300: #D1D5DB;
+  --grey-300: #d1d5db;
 
   --bg-support: #e0f0ff;
   --text-support: #0066cc;
@@ -52,6 +52,8 @@
   --dropdown-bg: #ffffff;
   --dropdown-text: #000000;
   --dropdown-border: #cccccc;
+
+  --dot-color: #333;
 }
 
 [data-theme="dark"] {
@@ -80,7 +82,7 @@
   --card-bg: #1e293b;
   --card-text: #f9fafb;
   --card-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
-  --grey-300: #4B5563;
+  --grey-300: #4b5563;
 
   --bg-support: #003355;
   --text-support: #66ccff;
@@ -94,6 +96,8 @@
   --dropdown-bg: #1e1e1e;
   --dropdown-text: #ffffff;
   --dropdown-border: #444444;
+
+  --dot-color: #ccc;
 }
 
 body {

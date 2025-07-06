@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getNewChatState } from '../../redux/slices/generalStateSlice';
 import { fetchConversationList } from '../../utils/utils';
 import { getUserName } from '../../redux/slices/userSlice';
-import { setConversation } from '../../redux/slices/conversationSlice';
+import { setAllConversation } from '../../redux/slices/conversationSlice';
 
 const Home = () => {
   const isNewChatOpen = useSelector(getNewChatState);
@@ -16,7 +16,9 @@ const Home = () => {
 
   useEffect(() => {
     const listItem = fetchConversationList(userName);
-    dispatch(setConversation(listItem.conversationList));
+    console.log(listItem);
+    
+    dispatch(setAllConversation(listItem.conversationList));
   }, [dispatch, userName]);
 
   return (

@@ -1,8 +1,20 @@
-export const loadConversations = () => {
-    const activeConversation = { id: Date.now(), title: '', conversation: [], tag: '', userName: '' };
-    const conversationList = [];
-    return { conversationList, activeConversation };
+export const loadConversations = (userName = '') => {
+  const data = localStorage.getItem('allConversationList');
+  if (data) {
+    const parsed = JSON.parse(data);
+    const userData = parsed.find(conv => conv.userName === userName);
+    if (userData) {
+      return {
+        conversationList: userData.conversationList,
+        activeConversation: userData.conversationList[userData.conversationList.length - 1] || {
+          id: Date.now(), title: '', conversation: [], tag: '', userName: ''
+        }
+      };
+    }
+  }
+  return { conversationList: [], activeConversation: { id: Date.now(), title: '', conversation: [], tag: '', userName: '' } };
 }
+
 
 export const getQuickPromptList = () => {
     const prompts = [
@@ -41,24 +53,66 @@ export const getQuickPromptList = () => {
     return prompts;
 }
 
-export const saveToDB = (currentConversationsList, userName) => {
-    let conversationList = [];
-    const data = localStorage.getItem('allConversationList');
-    if (data) {
-        conversationList = JSON.parse(data);
+// export const saveToDB = (currentConversationsList, userName) => {
+//     let conversationList = [];
+//     const data = localStorage.getItem('allConversationList');
+//     if (data) {
+//         conversationList = JSON.parse(data);
 
-        const index = conversationList.findIndex((conv) => conv.userName === userName);
-        if (index !== -1) {
-            conversationList[index] = { userName, conversationList: currentConversationsList };
-        } else {
-            conversationList.push(currentConversationsList);
-        }
+//         const index = conversationList.findIndex((conv) => conv.userName === userName);
+//         if (index !== -1) {
+//             conversationList[index] = { userName, conversationList: currentConversationsList };
+//         } else {
+//             conversationList.push({ userName, conversationList: currentConversationsList });
+//         }
+//     } else {
+//         conversationList.push({ userName, conversationList: currentConversationsList });
+//     }
+
+//     localStorage.setItem('allConversationList', JSON.stringify(conversationList));
+// }
+
+export const saveToDB = (currentConversation, userName) => {
+  let conversationList = [];
+  const data = localStorage.getItem('allConversationList');
+
+  if (data) {
+    conversationList = JSON.parse(data);
+    const userIndex = conversationList.findIndex((conv) => conv.userName === userName);
+
+    if (userIndex !== -1) {
+      const userConversations = conversationList[userIndex].conversationList;
+
+      const existingConvIndex = userConversations.findIndex(
+        (conv) => conv.id === currentConversation.id
+      );
+
+      if (existingConvIndex !== -1) {
+        // Update existing conversation
+        userConversations[existingConvIndex] = { ...currentConversation };
+      } else {
+        // Add new conversation
+        userConversations.push({ ...currentConversation });
+      }
+
     } else {
-        conversationList.push({ userName, conversationList: currentConversationsList });
+      // New user entry
+      conversationList.push({
+        userName,
+        conversationList: [{ ...currentConversation }]
+      });
     }
+  } else {
+    // No data in localStorage yet
+    conversationList.push({
+      userName,
+      conversationList: [{ ...currentConversation }]
+    });
+  }
 
-    localStorage.setItem('allConversationList', JSON.stringify(conversationList));
-}
+  localStorage.setItem('allConversationList', JSON.stringify(conversationList));
+};
+
 
 
 export const fetchConversationList = (userName) => {
@@ -69,6 +123,7 @@ export const fetchConversationList = (userName) => {
         const index = conversationList.findIndex((conv) => conv.userName === userName);
         if (index !== -1) {
             allConversation = conversationList[index];
+            console.log(allConversation)
         }
     }
     return allConversation;

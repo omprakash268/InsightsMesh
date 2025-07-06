@@ -4,6 +4,7 @@ import './ChatItem.css';
 import { FaRobot } from "react-icons/fa";
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import DotLoader from './DotLoader/DotLoader';
 
 const ChatItem = ({ chat }) => {
     return (
@@ -11,6 +12,9 @@ const ChatItem = ({ chat }) => {
             <div className={`chat-wrapper-inner flex-item gemini-response ${chat.sender}`}>
                 {chat.sender == 'bot' && <FaRobot className='bot-icon' />}
                 <div className={`${chat.sender}-reply flex-item`}>
+                    {
+                        (chat.sender == 'bot' && chat.content == '') ? <DotLoader /> : null
+                    }
                     {
                         chat.sender == 'bot' ? <ReactMarkdown remarkPlugins={[remarkGfm]}>
                             {chat.content}
