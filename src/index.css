@@ -1,0 +1,118 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: outfit;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+}
+
+[data-theme="light"] {
+  --bg-color: #f9fafb; /* App background */
+  --text-color: #1f2937; /* Primary text */
+  --accent-color: #3b82f6; /* Primary button / links */
+  --input-bg: #ffffff; /* Input background */
+  --input-border: #d1d5db; /* Input border */
+  --message-bot-bg: #e5e7eb; /* Bot message background */
+  --message-user-bg: #dbeafe; /* User message background */
+  --sidebar-bg: #f3f4f6; /* Light gray sidebar */
+  --sidebar-text: #111827; /* Dark text */
+  --border-color: #e5e7eb; /* Generic border */
+  --scrollbar-track: #f1f1f1;
+  --scrollbar-thumb: #888;
+  --scrollbar-thumb-hover: #555;
+  --new-chat-bg: #e0f2fe; /* Light blue background */
+  --new-chat-text: #0369a1; /* Dark blue text/icon */
+  --new-chat-hover-bg: #bae6fd;
+  --new-chat-border: #7dd3fc;
+  --input-bg: #ffffff;
+  --input-text: #111827;
+  --input-border: #d1d5db;
+  --input-placeholder: #9ca3af;
+  --input-focus-border: #3b82f6;
+  --card-bg: #ffffff;
+  --card-text: #1f2937;
+  --card-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  --grey-300: #D1D5DB;
+}
+
+[data-theme="dark"] {
+  --bg-color: #111827; /* App background */
+  --text-color: #f9fafb; /* Primary text */
+  --accent-color: #60a5fa; /* Primary button / links */
+  --input-bg: #1f2937; /* Input background */
+  --input-border: #374151; /* Input border */
+  --message-bot-bg: #1e293b; /* Bot message background */
+  --message-user-bg: #2563eb; /* User message background */
+  --sidebar-bg: #1f2937; /* Slate dark */
+  --sidebar-text: #f9fafb; /* Light text */
+  --border-color: #374151; /* Generic border */
+  --scrollbar-track: #1f2937;
+  --scrollbar-thumb: #4b5563;
+  --scrollbar-thumb-hover: #6b7280;
+  --new-chat-bg: #1e3a8a; /* Deep blue */
+  --new-chat-text: #bfdbfe; /* Light text */
+  --new-chat-hover-bg: #2563eb;
+  --new-chat-border: #3b82f6;
+  --input-bg: #1f2937;
+  --input-text: #f9fafb;
+  --input-border: #374151;
+  --input-placeholder: #6b7280;
+  --input-focus-border: #60a5fa;
+  --card-bg: #1e293b;
+  --card-text: #f9fafb;
+  --card-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  --grey-300: #4B5563;
+}
+
+body {
+  color: var(--text-color);
+  background-color: var(--bg-color);
+}
+
+/* Custom scrollbar */
+
+/* Scrollbar width */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+/* Track (background) */
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+  border-radius: 10px;
+}
+
+/* Thumb (draggable part) */
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 10px;
+}
+
+/* Thumb on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+/* Common Styles */
+.flex-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+.text-elipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
