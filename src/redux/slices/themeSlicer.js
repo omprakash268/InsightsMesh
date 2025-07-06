@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { storedTheme } from "../../utils/utils";
 
 /**
  * Redux slice to manage application theme (light/dark).
  */
 export const themeSlice = createSlice({
   name: 'theme',
-  initialState: 'light',
+  initialState: storedTheme(),
   reducers: {
     /**
      * Updates the theme mode.

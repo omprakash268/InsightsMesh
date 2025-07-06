@@ -59,3 +59,11 @@ export const fetchConversationList = (userName) => {
     return {};
   }
 };
+
+export const storedTheme = () => {
+  const theme = localStorage.getItem('user-theme');
+  if (theme) {
+    return theme;
+  }
+  return 'light';
+}

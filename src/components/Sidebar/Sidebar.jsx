@@ -18,8 +18,6 @@ import {
   updateCurrentConversation
 } from '../../redux/slices/conversationSlice';
 
-import { getUserName } from '../../redux/slices/userSlice';
-
 import { deleteConversationFromDB } from '../../utils/saveToDB';
 
 import {
@@ -38,6 +36,7 @@ import {
 } from 'react-icons/md';
 
 import './Sidebar.css';
+import { getUsername } from '../../redux/slices/authSlice';
 
 const Sidebar = () => {
   const dispatch = useDispatch();
@@ -48,12 +47,17 @@ const Sidebar = () => {
 
   const theme = useSelector(getTheme);
   const isNewChatOpen = useSelector(getNewChatState);
-  const userName = useSelector(getUserName);
+  const { userName } = useSelector(getUsername);
   const { allConversationsList, currentConversation } = useSelector(getConversation);
 
   /** Theme toggle handler */
   const toggleTheme = () => {
-    dispatch(updateTheme(theme === 'dark' ? 'light' : 'dark'));
+    let newTheme = 'light';
+    if (theme === 'light') {
+      newTheme = 'dark';
+    }
+    dispatch(updateTheme(newTheme));
+    localStorage.setItem('user-theme', newTheme);
   };
 
   /** Sidebar expand/collapse toggle */

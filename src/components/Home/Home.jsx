@@ -8,18 +8,24 @@ import QueryInput from './QueryInput/QueryInput';
 import './Home.css';
 
 import { getNewChatState } from '../../redux/slices/generalStateSlice';
-import { getUserName } from '../../redux/slices/userSlice';
 import { setAllConversation } from '../../redux/slices/conversationSlice';
 
 import { fetchConversationList } from '../../utils/utils';
+import { getUsername } from '../../redux/slices/authSlice';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const dispatch = useDispatch();
   const isNewChatOpen = useSelector(getNewChatState);
-  const userName = useSelector(getUserName);
+  const { userName } = useSelector(getUsername);
+  const navigate = useNavigate();
+
 
   // Load conversation list from local storage on mount
   useEffect(() => {
+    if (!userName) {
+      navigate('/login');
+    }
     const listItem = fetchConversationList(userName);
     const userConversations = listItem?.conversationList || [];
     dispatch(setAllConversation(userConversations));
@@ -29,7 +35,7 @@ const Home = () => {
     <div className='home-container'>
       {/* Show welcome screen on new chat, otherwise show chat window */}
       {isNewChatOpen ? <Welcome /> : <ChatWindow />}
-      
+
       {/* Query input bar is persistent */}
       <QueryInput />
     </div>
