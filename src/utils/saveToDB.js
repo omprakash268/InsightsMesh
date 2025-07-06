@@ -1,66 +1,69 @@
 import { decryptData, encryptData } from "./encryption";
 
-
+/**
+ * Saves or updates a single conversation in localStorage, encrypted per user.
+ * @param {object} currentConversation - The conversation to save.
+ * @param {string} userName - The user identifier (e.g. email).
+ */
 export const saveToDB = (currentConversation, userName) => {
-  let conversationList = [];
-  let encryptedData = localStorage.getItem('allConversationList');
+  if (!currentConversation || !userName) return;
 
-  if (encryptedData) {
-    conversationList = decryptData(encryptedData);;
-    const userIndex = conversationList.findIndex((conv) => conv.userName === userName);
+  const encryptedData = localStorage.getItem('allConversationList');
+  let conversationList = encryptedData ? decryptData(encryptedData) : [];
 
-    if (userIndex !== -1) {
-      const userConversations = conversationList[userIndex].conversationList;
+  if (!Array.isArray(conversationList)) conversationList = [];
 
-      const existingConvIndex = userConversations.findIndex(
-        (conv) => conv.id === currentConversation.id
-      );
+  const userIndex = conversationList.findIndex((u) => u.userName === userName);
 
-      if (existingConvIndex !== -1) {
-        // Update existing conversation
-        userConversations[existingConvIndex] = { ...currentConversation };
-      } else {
-        // Add new conversation
-        userConversations.push({ ...currentConversation });
-      }
+  if (userIndex !== -1) {
+    const userConversations = conversationList[userIndex].conversationList || [];
 
+    const existingConvIndex = userConversations.findIndex(
+      (conv) => conv.id === currentConversation.id
+    );
+
+    if (existingConvIndex !== -1) {
+      // Update existing conversation
+      userConversations[existingConvIndex] = { ...currentConversation };
     } else {
-      // New user entry
-      conversationList.push({
-        userName,
-        conversationList: [{ ...currentConversation }]
-      });
+      // Add new conversation
+      userConversations.push({ ...currentConversation });
     }
+
+    conversationList[userIndex].conversationList = userConversations;
   } else {
-    // No data in localStorage yet
+    // New user entry
     conversationList.push({
       userName,
       conversationList: [{ ...currentConversation }]
     });
   }
-  const ecryptedData = encryptData(conversationList);
-  localStorage.setItem('allConversationList', ecryptedData);
+
+  const updatedEncrypted = encryptData(conversationList);
+  localStorage.setItem('allConversationList', updatedEncrypted);
 };
 
-
+/**
+ * Deletes a conversation for a specific user from encrypted localStorage.
+ * @param {string|number} conversationId - ID of the conversation to delete.
+ * @param {string} userName - The user identifier.
+ */
 export const deleteConversationFromDB = (conversationId, userName) => {
-  let conversationList = [];
+  if (!conversationId || !userName) return;
+
   const encryptedData = localStorage.getItem('allConversationList');
+  let conversationList = encryptedData ? decryptData(encryptedData) : [];
 
-  if (encryptedData) {
-    conversationList = decryptData(encryptedData);
+  if (!Array.isArray(conversationList)) return;
 
-    const userIndex = conversationList.findIndex(user => user.userName === userName);
+  const userIndex = conversationList.findIndex(user => user.userName === userName);
+  if (userIndex === -1) return;
 
-    if (userIndex !== -1) {
-      // Filter out the conversation with matching id
-      const userConversations = conversationList[userIndex].conversationList;
-      const updatedConversations = userConversations.filter(conv => conv.id !== conversationId);
+  const existingUserConversations = conversationList[userIndex].conversationList || [];
+  const updatedConversations = existingUserConversations.filter(conv => conv.id !== conversationId);
 
-      conversationList[userIndex].conversationList = updatedConversations;
-    }
-  }
+  conversationList[userIndex].conversationList = updatedConversations;
 
-  const encryptedUpdated = encryptData(conversationList);
-  localStorage.setItem('allConversationList', encryptedUpdated);
+  const updatedEncrypted = encryptData(conversationList);
+  localStorage.setItem('allConversationList', updatedEncrypted);
 };

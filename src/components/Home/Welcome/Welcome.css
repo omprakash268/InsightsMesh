@@ -1,20 +1,28 @@
+/* Main container for the welcome section */
 .welcome-container {
   width: 100%;
   height: 85vh;
+  display: flex;              /* Required to activate flex-direction */
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   gap: 1rem;
+  padding: 2rem;
+  box-sizing: border-box;
 }
 
-.welocome-text-gradient {
+/* Fixed typo: .welocome-text-gradient → .welcome-text-gradient */
+/* Gradient heading with animated shine */
+.welcome-text-gradient {
   font-size: 3rem;
   font-weight: 800;
   background: linear-gradient(
     90deg,
-    #4285f4,
-    /* Google Blue */ #9b72cb,
-    /* Purple */ #ff4f81,
-    /* Pink */ #ff6d00,
-    /* Orange */ #34a853 /* Green */
+    #4285f4,   /* Google Blue */
+    #9b72cb,   /* Purple */
+    #ff4f81,   /* Pink */
+    #ff6d00,   /* Orange */
+    #34a853    /* Green */
   );
   background-size: 200% auto;
   background-clip: text;
@@ -22,12 +30,38 @@
   color: transparent;
   -webkit-text-fill-color: transparent;
   animation: shine 4s linear infinite;
+  text-align: center;
+  line-height: 1.2;
 }
 
+/* Shine animation for the text gradient */
+@keyframes shine {
+  0% {
+    background-position: 0% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+/* Responsive grid layout for quick prompt cards */
 .quick-prompts-card {
   width: 80%;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-  justify-content: start;
   gap: 1rem;
+  justify-content: start;
+  padding: 1rem 0;
+}
+
+/* Optional: Add a bit of responsiveness for mobile devices */
+@media (max-width: 480px) {
+  .welcome-text-gradient {
+    font-size: 2rem;
+  }
+
+  .quick-prompts-card {
+    width: 95%;
+    gap: 0.75rem;
+  }
 }

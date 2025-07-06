@@ -1,18 +1,26 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-export const themeSlicer = createSlice({
-    name: 'theme',
-    initialState: 'light',
-    reducers: {
-        updateTheme: (state, action) => {
-            state = action.payload;
-            return state;
-        }
-    }
+/**
+ * Redux slice to manage application theme (light/dark).
+ */
+export const themeSlice = createSlice({
+  name: 'theme',
+  initialState: 'light',
+  reducers: {
+    /**
+     * Updates the theme mode.
+     * @param {string} action.payload - "light" or "dark"
+     * @returns {string}
+     */
+    updateTheme: (_, action) => action.payload
+  }
 });
 
-export const { updateTheme } = themeSlicer.actions;
+// Action
+export const { updateTheme } = themeSlice.actions;
 
+// Selector
 export const getTheme = (state) => state.theme;
 
-export const themeReducer = themeSlicer.reducer;
+// Reducer
+export const themeReducer = themeSlice.reducer;

@@ -1,43 +1,70 @@
+/* ================================
+   Chat Header Container Styling
+================================= */
 .chat-header-container {
   width: 100%;
   height: 4rem;
   padding: 1rem;
-  justify-content: space-between !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px;
   border-bottom: 1px solid var(--grey-300);
 }
+
+/* ================================
+   Title Styling
+================================= */
 .title-wrapper {
   height: 100%;
   max-width: 50%;
-}
-.title {
-  height: 100%;
+  display: flex;
+  align-items: center;
 }
 
+.title {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+/* ================================
+   Icon Styling (Edit / Tick / Download)
+================================= */
 .tick-icon,
 .edit-icon {
   color: var(--text-color);
   margin-left: 1rem;
   cursor: pointer;
   font-size: 1rem;
+  transition: color 0.2s ease;
 }
 
 .tick-icon {
-  font-size: 1.5rem !important;
+  font-size: 1.5rem;
 }
 
 .tick-icon:hover {
-  color: rgb(0, 182, 36);
+  color: rgb(0, 182, 36); /* Green on hover */
 }
 
 .download-file {
   font-size: 1.5rem;
   color: var(--text-color);
   cursor: pointer;
+  transition: color 0.2s ease;
 }
 
+.download-file:hover {
+  color: var(--primary); /* Optional: add hover effect */
+}
+
+/* ================================
+   Dropdown Styling
+================================= */
 .dropdown-wrapper {
-  max-width: 250px;
+  max-width: 30rem;
+  width: 100%;
 }
 
 .dropdown-select {
@@ -50,11 +77,14 @@
   color: var(--dropdown-text);
   transition: all 0.2s ease;
 }
+
 .dropdown-select:focus {
   outline: none;
+  border-color: var(--input-focus-border);
+  box-shadow: 0 0 0 2px var(--input-focus-border);
 }
 
-/* Themed tag options */
+/* Tag Theme Variants */
 .dropdown-select.support {
   background-color: var(--bg-support);
   color: var(--text-support);
@@ -70,6 +100,9 @@
   color: var(--text-internal);
 }
 
+/* ================================
+   Title Input Styling
+================================= */
 .title-input {
   width: 100%;
   height: 2rem;
@@ -85,6 +118,7 @@
 .title-input::placeholder {
   color: var(--input-placeholder);
 }
+
 .title-input:focus {
   outline: none;
   border-color: var(--input-focus-border);

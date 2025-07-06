@@ -1,67 +1,88 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getTheme, updateTheme } from '../../redux/slices/themeSlicer';
-import { FaPlus, FaMoon } from 'react-icons/fa';
-import { GiHamburgerMenu } from 'react-icons/gi';
-import { IoSunny } from 'react-icons/io5';
-import { MdOutlineChat } from 'react-icons/md';
+
+import {
+  getTheme,
+  updateTheme
+} from '../../redux/slices/themeSlicer';
+
 import {
   getNewChatState,
   triggerClearQuery,
-  updateNewChatState,
+  updateNewChatState
 } from '../../redux/slices/generalStateSlice';
+
 import {
   getConversation,
   setAllConversation,
-  updateCurrentConversation,
+  updateCurrentConversation
 } from '../../redux/slices/conversationSlice';
+
 import { getUserName } from '../../redux/slices/userSlice';
-import './Sidebar.css';
-import { MdDeleteForever } from "react-icons/md";
+
 import { deleteConversationFromDB } from '../../utils/saveToDB';
 
+import {
+  FaPlus,
+  FaMoon
+} from 'react-icons/fa';
+import {
+  GiHamburgerMenu
+} from 'react-icons/gi';
+import {
+  IoSunny
+} from 'react-icons/io5';
+import {
+  MdOutlineChat,
+  MdDeleteForever
+} from 'react-icons/md';
+
+import './Sidebar.css';
+
 const Sidebar = () => {
+  const dispatch = useDispatch();
+
   const [isExtended, setIsExtended] = useState(true);
   const [filterText, setFilterText] = useState('');
   const [filteredConversations, setFilteredConversation] = useState([]);
+
   const theme = useSelector(getTheme);
   const isNewChatOpen = useSelector(getNewChatState);
-  const { allConversationsList, currentConversation } = useSelector(getConversation);
   const userName = useSelector(getUserName);
-  const dispatch = useDispatch();
+  const { allConversationsList, currentConversation } = useSelector(getConversation);
 
+  /** Theme toggle handler */
   const toggleTheme = () => {
-    const newTheme = theme === 'dark' ? 'light' : 'dark';
-    dispatch(updateTheme(newTheme));
+    dispatch(updateTheme(theme === 'dark' ? 'light' : 'dark'));
   };
 
+  /** Sidebar expand/collapse toggle */
+  const toggleExpand = () => {
+    setIsExtended(prev => !prev);
+  };
+
+  /** Filter input handler */
   const handleFilterChange = (e) => {
     setFilterText(e.target.value);
   };
 
-  const toggleExpand = () => {
-    setIsExtended((prevState) => !prevState);
-  };
-
+  /** New chat creation handler */
   const handleNewConversation = () => {
     if (isNewChatOpen) return;
 
-    // Prevent resetting if the current conversation is already blank
+    // Skip if a blank conversation is already active
     if (
-      currentConversation &&
-      currentConversation.title === '' &&
-      currentConversation.conversation?.length === 0
-    ) {
-      return;
-    }
+      currentConversation?.title === '' &&
+      currentConversation?.conversation?.length === 0
+    ) return;
 
     const newConversation = {
       id: Date.now(),
-      createdAt: Date.now(), // Added timestamp
+      createdAt: Date.now(),
       title: '',
       conversation: [],
       tag: '',
-      userName: userName,
+      userName,
     };
 
     dispatch(triggerClearQuery());
@@ -69,86 +90,102 @@ const Sidebar = () => {
     dispatch(updateNewChatState(true));
   };
 
+  /** Activate a selected conversation */
   const setActiveConversation = (conversation) => {
     dispatch(triggerClearQuery());
     dispatch(updateCurrentConversation(conversation));
     dispatch(updateNewChatState(false));
   };
 
+  /** Delete a selected conversation */
   const deleteConversation = (item) => {
-    console.log(item)
-    const updatedData = allConversationsList.filter((conv) => conv.id != item.id);
+    const updatedData = allConversationsList.filter((conv) => conv.id !== item.id);
     dispatch(setAllConversation(updatedData));
-    deleteConversationFromDB(item.id,item.userName);
-  }
+    deleteConversationFromDB(item.id, item.userName);
+  };
 
-  // Sort conversations by createdAt
+  /** Sort conversations on mount or update */
   useEffect(() => {
-    const sortedList = [...allConversationsList].sort((a, b) => b.createdAt - a.createdAt);
-    setFilteredConversation(sortedList);
+    const sorted = [...allConversationsList].sort((a, b) => b.createdAt - a.createdAt);
+    setFilteredConversation(sorted);
   }, [allConversationsList]);
 
-  // Apply filter & keep sorted order
+  /** Apply tag filter */
   useEffect(() => {
-    const sortedList = [...allConversationsList].sort((a, b) => b.createdAt - a.createdAt);
+    const sorted = [...allConversationsList].sort((a, b) => b.createdAt - a.createdAt);
 
-    if (filterText === '') {
-      setFilteredConversation(sortedList);
+    if (!filterText.trim()) {
+      setFilteredConversation(sorted);
     } else {
-      const filteredItems = sortedList.filter((conv) =>
+      const filtered = sorted.filter(conv =>
         conv?.tag?.toLowerCase().includes(filterText.toLowerCase())
       );
-      setFilteredConversation(filteredItems);
+      setFilteredConversation(filtered);
     }
   }, [filterText, allConversationsList]);
 
   return (
     <div className={`sidebar-container ${isExtended ? 'sidebar-width' : 'sidebar-default-width'}`}>
+      {/* Sidebar toggle icon */}
       <GiHamburgerMenu className="menu-icon" onClick={toggleExpand} />
 
+      {/* New Chat Button */}
       <button
-        className={`new-chat-container flex-item text-elipsis ${isExtended ? 'new-chat-width' : 'new-chat-default-width'
-          }`}
+        className={`new-chat-container flex-item text-elipsis ${isExtended ? 'new-chat-width' : 'new-chat-default-width'}`}
         onClick={handleNewConversation}
+        aria-label="Start a new conversation"
       >
         <FaPlus className="plus-icon" />
-        {isExtended ? 'New Chat' : ''}
+        {isExtended && 'New Chat'}
       </button>
 
+      {/* Filter Search */}
       {isExtended && (
         <div className="filter-container">
           <input
             type="text"
             id="filter-text-input"
             className="filter-input"
-            onChange={handleFilterChange}
             value={filterText}
+            onChange={handleFilterChange}
             placeholder="Search by tag..."
+            aria-label="Filter conversations"
           />
         </div>
       )}
 
+      {/* Recent Conversations List */}
       {isExtended && (
         <div className="recent-chat-container flex-item">
           <div className="recent-title-container flex-item">
             <MdOutlineChat className="recent-chat-icon" />
             <span className="recent-title">Recent</span>
           </div>
+
           <div className="conversation-list">
-            {filteredConversations?.map((item) => (
+            {filteredConversations.map((item) => (
               <div
                 key={item.id}
-                className={`conversation-item-wrapper flex-item ${currentConversation?.id === item.id ? 'selectedConversation' : ''
-                  }`}
+                className={`conversation-item-wrapper flex-item ${currentConversation?.id === item.id ? 'selectedConversation' : ''}`}
                 onClick={() => setActiveConversation(item)}
               >
-                <div className="conversation-item text-elipsis">{item.title || 'Untitled'}</div>
-                <span className="conversation-tag">{item.tag}</span>
+                <div className="conversation-item text-elipsis">
+                  {item.title || 'Untitled'}
+                </div>
+
+                <span className="conversation-tag">
+                  {item.tag || 'No Tag'}
+                </span>
+
                 <div className="delete-wrapper flex-item">
-                  <MdDeleteForever className='delete-icon' onClick={(event) => {
-                    event.stopPropagation();
-                    deleteConversation(item);
-                  }} />
+                  <MdDeleteForever
+                    className="delete-icon"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      deleteConversation(item);
+                    }}
+                    aria-label="Delete conversation"
+                  />
                 </div>
               </div>
             ))}
@@ -156,14 +193,19 @@ const Sidebar = () => {
         </div>
       )}
 
+      {/* Theme Toggle Button */}
       <div className="settings-container">
         <button
           onClick={toggleTheme}
-          className={`flex-item settings-btn text-elipsis ${isExtended ? 'setting-btn-width' : 'setting-btn-min-width'
-            }`}
+          className={`flex-item settings-btn text-elipsis ${isExtended ? 'setting-btn-width' : 'setting-btn-min-width'}`}
+          aria-label="Toggle theme"
         >
-          {theme === 'dark' ? <FaMoon className="theme-icon" /> : <IoSunny className="theme-icon" />}
-          Theme
+          {theme === 'dark' ? (
+            <FaMoon className="theme-icon" />
+          ) : (
+            <IoSunny className="theme-icon" />
+          )}
+          {isExtended && 'Theme'}
         </button>
       </div>
     </div>

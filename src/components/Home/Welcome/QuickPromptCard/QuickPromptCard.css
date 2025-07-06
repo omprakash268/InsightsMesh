@@ -1,28 +1,51 @@
+/* Root card styling */
 .prompt-card {
   padding: 1.5rem;
   height: 10rem;
   width: 100%;
   border-radius: 1rem;
+
   background-color: var(--card-bg);
   color: var(--card-text);
-  /* box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
-    rgba(0, 0, 0, 0.06) 0px 2px 4px -1px; */
-  /* transition: box-shadow 0.5s linear; */
   box-shadow: var(--card-shadow);
-  transition: background-color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+
+  transition:
+    background-color 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  /* Accessibility consideration */
+  outline: none;
 }
 
+/* Hover effect for interactive feedback */
 .prompt-card:hover {
   cursor: pointer;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
 }
 
+/* Main prompt text */
 .prompt-content {
   font-size: 1rem;
+  font-weight: 500;
   margin-bottom: 0.5rem;
+  line-height: 1.4;
+  word-break: break-word;
 }
+
+/* Subtext for additional context or source */
 .sub-text {
   font-size: 0.8rem;
   font-style: italic;
   color: var(--card-text);
+  opacity: 0.8;
+}
+
+/* Optional: Focus state for keyboard accessibility */
+.prompt-card:focus {
+  box-shadow: 0 0 0 3px rgba(100, 150, 255, 0.4);
 }
