@@ -11,12 +11,13 @@ const ChatHeader = () => {
     const tags = ['Support', 'Sales', 'Internal'];
     const dispatch = useDispatch();
 
-
+    console.log(currentConversation.conversationList)
 
     const handleChange = (e) => {
         const value = e.target.value;
         if (currentConversation.tag === value) return;
         setSelectedTag(value);
+        console.log('a',{ ...currentConversation, tag: value })
         dispatch(updateCurrentConversation({ ...currentConversation, tag: value }));
     };
 

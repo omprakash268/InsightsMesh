@@ -19,7 +19,7 @@ const Sidebar = () => {
   const { allConversationsList, currentConversation } = useSelector(getConversation);
   const userName = useSelector(getUserName);
   const dispatch = useDispatch();
-
+  
   const toggleTheme = () => {
     const newTheme = theme === 'dark' ? 'light' : 'dark';
     dispatch(updateTheme(newTheme));
@@ -59,6 +59,7 @@ const Sidebar = () => {
   };
 
   const setActiveConversation = (conversation) => {
+    console.log('conversation',conversation)
     dispatch(triggerClearQuery());
     dispatch(updateCurrentConversation(conversation));
     dispatch(updateNewChatState(false));

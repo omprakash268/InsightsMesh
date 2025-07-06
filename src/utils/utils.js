@@ -53,25 +53,6 @@ export const getQuickPromptList = () => {
     return prompts;
 }
 
-// export const saveToDB = (currentConversationsList, userName) => {
-//     let conversationList = [];
-//     const data = localStorage.getItem('allConversationList');
-//     if (data) {
-//         conversationList = JSON.parse(data);
-
-//         const index = conversationList.findIndex((conv) => conv.userName === userName);
-//         if (index !== -1) {
-//             conversationList[index] = { userName, conversationList: currentConversationsList };
-//         } else {
-//             conversationList.push({ userName, conversationList: currentConversationsList });
-//         }
-//     } else {
-//         conversationList.push({ userName, conversationList: currentConversationsList });
-//     }
-
-//     localStorage.setItem('allConversationList', JSON.stringify(conversationList));
-// }
-
 export const saveToDB = (currentConversation, userName) => {
   let conversationList = [];
   const data = localStorage.getItem('allConversationList');
@@ -123,7 +104,6 @@ export const fetchConversationList = (userName) => {
         const index = conversationList.findIndex((conv) => conv.userName === userName);
         if (index !== -1) {
             allConversation = conversationList[index];
-            console.log(allConversation)
         }
     }
     return allConversation;
