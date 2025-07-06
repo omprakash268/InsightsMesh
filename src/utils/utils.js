@@ -1,3 +1,8 @@
+export const loadConversations = () => {
+    const activeConversation = { id: Date.now(), title: '', conversation: [], tag: '', userName: '' };
+    const conversationList = [];
+    return { conversationList, activeConversation };
+}
 
 export const getQuickPromptList = () => {
     const prompts = [
