@@ -19,7 +19,6 @@ const ChatHeader = () => {
             tag:value
         }
         dispatch(updateCurrentConversation(updatedConversation));
-        console.log(updatedConversation)
     };
 
     const handleDownloadJson = () => {

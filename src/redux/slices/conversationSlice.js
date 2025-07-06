@@ -1,38 +1,42 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { loadConversations, saveToDB } from "../../utils/utils";
 
+const { conversationList, activeConversation } = loadConversations();
 
 export const conversationSlice = createSlice({
     name: 'conversation',
     initialState: {
-        allConversationsList: loadConversations().conversationList,
-        currentConversation: loadConversations().activeConversation
+        allConversationsList: conversationList,
+        currentConversation: activeConversation
     },
     reducers: {
-        addConversation: (state, action) => {
+        setConversation: (state, action) => {
             state.allConversationsList = action.payload;
-            saveToDB(state.allConversationsList);
+        },
+        addConversation: (state, action) => {
+            state.allConversationsList.push(action.payload);
+            const userName = action.payload.userName;
+
+            saveToDB(state.allConversationsList, userName);
         },
         updateCurrentConversation: (state, action) => {
             state.currentConversation = action.payload;
 
+            const userName = action.payload.userName;
             const index = state.allConversationsList.findIndex(conv => conv.id === action.payload.id);
 
             if (index !== -1) {
-                // Replace the object at the found index
                 state.allConversationsList[index] = action.payload;
-            } else {
-                if (action.payload?.title?.length > 0) {
-                    state.allConversationsList.push(action.payload);
-                }
+            } else if (action.payload?.title?.length > 0) {
+                state.allConversationsList.push(action.payload);
             }
 
-            saveToDB(state.allConversationsList);
+            saveToDB(state.allConversationsList, userName);
         }
     }
 });
 
-export const { addConversation, updateCurrentConversation } = conversationSlice.actions;
+export const { setConversation, addConversation, updateCurrentConversation } = conversationSlice.actions;
 
 export const getConversation = (state) => state.conversation;
 

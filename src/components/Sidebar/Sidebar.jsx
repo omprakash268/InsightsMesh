@@ -9,6 +9,7 @@ import { getConversation, updateCurrentConversation } from '../../redux/slices/c
 import { FaMoon } from "react-icons/fa";
 import { IoSunny } from "react-icons/io5";
 import './Sidebar.css';
+import { getUserName } from '../../redux/slices/userSlice';
 
 
 const Sidebar = () => {
@@ -18,6 +19,7 @@ const Sidebar = () => {
   const theme = useSelector(getTheme);
   const isNewChatOpen = useSelector(getNewChatState);
   const { allConversationsList, currentConversation } = useSelector(getConversation);
+  const userName = useSelector(getUserName);
   const dispatch = useDispatch();
 
   const toggleTheme = () => {
@@ -37,7 +39,7 @@ const Sidebar = () => {
     if (isNewChatOpen) {
       return;
     }
-    const currentConversation = { id: Date.now(), title: '', conversation: [] };
+    const currentConversation = { id: Date.now(), title: '', conversation: [], userName: userName };
     dispatch(triggerClearQuery());
     dispatch(updateCurrentConversation(currentConversation))
     dispatch(updateNewChatState(!isNewChatOpen));

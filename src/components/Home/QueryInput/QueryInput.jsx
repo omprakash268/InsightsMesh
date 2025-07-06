@@ -13,12 +13,14 @@ import {
 } from '../../../redux/slices/conversationSlice';
 import { IoMdSend } from "react-icons/io";
 import './QueryInput.css';
+import { getUserName } from '../../../redux/slices/userSlice';
 
 const QueryInput = () => {
   const dispatch = useDispatch();
   const selectedPrompt = useSelector(getselectedPromptState);
   const isClearInput = useSelector(getClearInputControl);
   let { currentConversation } = useSelector(getConversation);
+  const userName = useSelector(getUserName);
 
   const [query, setQuery] = useState('');
 
@@ -42,7 +44,7 @@ const QueryInput = () => {
 
     // check if currentConversation exists or not
     if (!currentConversation || !Array.isArray(currentConversation.conversation)) {
-      currentConversation = { id: Date.now(), title: query, conversation: [], tag: '' };
+      currentConversation = { id: Date.now(), title: query, conversation: [], tag: '', userName: userName };
     }
 
     const timeStamp = Date.now();
@@ -64,6 +66,7 @@ const QueryInput = () => {
     const updatedConversation = {
       ...currentConversation,
       tag: 'Internal',
+      userName: userName,
       conversation: [
         ...currentConversation.conversation,
         user,
@@ -74,6 +77,7 @@ const QueryInput = () => {
     if (updatedConversation.title.length == 0) {
       updatedConversation.title = query;
     }
+
     dispatch(updateCurrentConversation(updatedConversation));
     dispatch(updateNewChatState(false));
     setQuery('');

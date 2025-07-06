@@ -1,7 +1,6 @@
 export const loadConversations = () => {
-    const activeConversation = { id: Date.now(), title: '', conversation: [], tag: '' };
-
-    const conversationList = fetchConversationList();
+    const activeConversation = { id: Date.now(), title: '', conversation: [], tag: '', userName: '' };
+    const conversationList = [];
     return { conversationList, activeConversation };
 }
 
@@ -42,15 +41,36 @@ export const getQuickPromptList = () => {
     return prompts;
 }
 
-export const saveToDB = (allConversationsList) => {
-    localStorage.setItem('allConversationList', JSON.stringify(allConversationsList));
-}
-
-export const fetchConversationList = () => {
+export const saveToDB = (currentConversationsList, userName) => {
     let conversationList = [];
     const data = localStorage.getItem('allConversationList');
     if (data) {
         conversationList = JSON.parse(data);
+
+        const index = conversationList.findIndex((conv) => conv.userName === userName);
+        if (index !== -1) {
+            conversationList[index] = { userName, conversationList: currentConversationsList };
+        } else {
+            conversationList.push(currentConversationsList);
+        }
+    } else {
+        conversationList.push({ userName, conversationList: currentConversationsList });
     }
-    return conversationList;
+
+    localStorage.setItem('allConversationList', JSON.stringify(conversationList));
+}
+
+
+export const fetchConversationList = (userName) => {
+    let allConversation = [];
+    const data = localStorage.getItem('allConversationList');
+    if (data) {
+        const conversationList = JSON.parse(data);
+        const index = conversationList.findIndex((conv) => conv.userName === userName);
+        if (index !== -1) {
+            allConversation = conversationList[index];
+        }
+    }
+
+    return allConversation;
 }

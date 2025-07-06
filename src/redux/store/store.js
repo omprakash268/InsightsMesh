@@ -3,15 +3,17 @@ import { conversationReducer } from "../slices/conversationSlice";
 import { loadConversations } from "../../utils/utils";
 import { themeReducer } from "../slices/themeSlicer";
 import { inputControlReducer, newChatReducer, selectedPromptReducer } from "../slices/generalStateSlice";
+import { userReducer } from "../slices/userSlice";
 
 
 export const store = configureStore({
     reducer: {
+        user: userReducer,
         conversation: conversationReducer,
         theme: themeReducer,
         newChat: newChatReducer,
         selectedPrompt: selectedPromptReducer,
-        clearInputControl: inputControlReducer
+        clearInputControl: inputControlReducer,
     },
     preloadedState: {
         conversation: {
