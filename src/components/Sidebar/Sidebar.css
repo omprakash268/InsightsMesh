@@ -170,3 +170,14 @@
 .tag-container {
   gap: 1rem;
 }
+
+.recent-title-container{
+  margin-left: 0.5rem;
+}
+.recent-chat-icon{
+  font-size: 1.5rem;
+  color: var(--text-color);
+}
+.recent-title-container span{
+ margin-left: 0.5rem;
+}

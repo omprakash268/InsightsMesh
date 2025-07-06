@@ -9,6 +9,7 @@ import { FaMoon } from "react-icons/fa";
 import { IoSunny } from "react-icons/io5";
 import './Sidebar.css';
 import { getUserName } from '../../redux/slices/userSlice';
+import { MdOutlineChat } from "react-icons/md";
 
 const Sidebar = () => {
   const [isExtended, setIsExtended] = useState(true);
@@ -19,7 +20,7 @@ const Sidebar = () => {
   const { allConversationsList, currentConversation } = useSelector(getConversation);
   const userName = useSelector(getUserName);
   const dispatch = useDispatch();
-  
+
   const toggleTheme = () => {
     const newTheme = theme === 'dark' ? 'light' : 'dark';
     dispatch(updateTheme(newTheme));
@@ -99,14 +100,16 @@ const Sidebar = () => {
             className='filter-input'
             onChange={handleFilterChange}
             value={filterText}
-            placeholder="Filter by tag..."
+            placeholder="Search by tag..."
           />
         </div>
       )}
 
       {isExtended && (
         <div className="recent-chat-container flex-item">
-          <span className='recent-title'>Recent</span>
+          <div className='recent-title-container flex-item'>
+            <MdOutlineChat className='recent-chat-icon'/><span className='recent-title'>Recent</span>
+          </div>
           <div className="conversation-list">
             {filteredConversations && filteredConversations?.map((item) => (
               <div
