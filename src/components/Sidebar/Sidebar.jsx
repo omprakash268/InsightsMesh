@@ -12,10 +12,13 @@ import {
 } from '../../redux/slices/generalStateSlice';
 import {
   getConversation,
+  setAllConversation,
   updateCurrentConversation,
 } from '../../redux/slices/conversationSlice';
 import { getUserName } from '../../redux/slices/userSlice';
 import './Sidebar.css';
+import { MdDeleteForever } from "react-icons/md";
+import { deleteConversationFromDB } from '../../utils/saveToDB';
 
 const Sidebar = () => {
   const [isExtended, setIsExtended] = useState(true);
@@ -54,7 +57,7 @@ const Sidebar = () => {
 
     const newConversation = {
       id: Date.now(),
-      createdAt: Date.now(), // ✅ Added timestamp
+      createdAt: Date.now(), // Added timestamp
       title: '',
       conversation: [],
       tag: '',
@@ -72,13 +75,20 @@ const Sidebar = () => {
     dispatch(updateNewChatState(false));
   };
 
-  // ✅ Sort conversations by createdAt
+  const deleteConversation = (item) => {
+    console.log(item)
+    const updatedData = allConversationsList.filter((conv) => conv.id != item.id);
+    dispatch(setAllConversation(updatedData));
+    deleteConversationFromDB(item.id,item.userName);
+  }
+
+  // Sort conversations by createdAt
   useEffect(() => {
     const sortedList = [...allConversationsList].sort((a, b) => b.createdAt - a.createdAt);
     setFilteredConversation(sortedList);
   }, [allConversationsList]);
 
-  // ✅ Apply filter & keep sorted order
+  // Apply filter & keep sorted order
   useEffect(() => {
     const sortedList = [...allConversationsList].sort((a, b) => b.createdAt - a.createdAt);
 
@@ -97,9 +107,8 @@ const Sidebar = () => {
       <GiHamburgerMenu className="menu-icon" onClick={toggleExpand} />
 
       <button
-        className={`new-chat-container flex-item text-elipsis ${
-          isExtended ? 'new-chat-width' : 'new-chat-default-width'
-        }`}
+        className={`new-chat-container flex-item text-elipsis ${isExtended ? 'new-chat-width' : 'new-chat-default-width'
+          }`}
         onClick={handleNewConversation}
       >
         <FaPlus className="plus-icon" />
@@ -129,13 +138,18 @@ const Sidebar = () => {
             {filteredConversations?.map((item) => (
               <div
                 key={item.id}
-                className={`conversation-item-wrapper flex-item ${
-                  currentConversation?.id === item.id ? 'selectedConversation' : ''
-                }`}
+                className={`conversation-item-wrapper flex-item ${currentConversation?.id === item.id ? 'selectedConversation' : ''
+                  }`}
                 onClick={() => setActiveConversation(item)}
               >
                 <div className="conversation-item text-elipsis">{item.title || 'Untitled'}</div>
                 <span className="conversation-tag">{item.tag}</span>
+                <div className="delete-wrapper flex-item">
+                  <MdDeleteForever className='delete-icon' onClick={(event) => {
+                    event.stopPropagation();
+                    deleteConversation(item);
+                  }} />
+                </div>
               </div>
             ))}
           </div>
@@ -145,9 +159,8 @@ const Sidebar = () => {
       <div className="settings-container">
         <button
           onClick={toggleTheme}
-          className={`flex-item settings-btn text-elipsis ${
-            isExtended ? 'setting-btn-width' : 'setting-btn-min-width'
-          }`}
+          className={`flex-item settings-btn text-elipsis ${isExtended ? 'setting-btn-width' : 'setting-btn-min-width'
+            }`}
         >
           {theme === 'dark' ? <FaMoon className="theme-icon" /> : <IoSunny className="theme-icon" />}
           Theme
