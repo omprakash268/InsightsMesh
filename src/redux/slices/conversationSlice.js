@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loadConversations } from "../../utils/utils";
+import { loadConversations, saveToDB } from "../../utils/utils";
 
 
 export const conversationSlice = createSlice({
@@ -11,6 +11,7 @@ export const conversationSlice = createSlice({
     reducers: {
         addConversation: (state, action) => {
             state.allConversationsList = action.payload;
+            saveToDB(state.allConversationsList);
         },
         updateCurrentConversation: (state, action) => {
             state.currentConversation = action.payload;
@@ -25,6 +26,8 @@ export const conversationSlice = createSlice({
                     state.allConversationsList.push(action.payload);
                 }
             }
+
+            saveToDB(state.allConversationsList);
         }
     }
 });
