@@ -16,7 +16,6 @@ const Home = () => {
 
   useEffect(() => {
     const listItem = fetchConversationList(userName);
-    console.log(listItem);
     
     dispatch(setAllConversation(listItem.conversationList));
   }, [dispatch, userName]);

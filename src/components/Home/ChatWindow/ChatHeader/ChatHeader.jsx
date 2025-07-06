@@ -4,21 +4,22 @@ import './ChatHeader.css';
 import { getConversation, updateCurrentConversation } from '../../../../redux/slices/conversationSlice';
 import { FaDownload } from "react-icons/fa6";
 import { useState } from 'react';
+import { useUpdateConversation } from '../../../../hook/useUpdateConversation';
 
 const ChatHeader = () => {
     const { currentConversation } = useSelector(getConversation);
     const [selectedTag, setSelectedTag] = useState('');
     const tags = ['Support', 'Sales', 'Internal'];
     const dispatch = useDispatch();
-
-    console.log(currentConversation.conversationList)
+    const updateConversationList  = useUpdateConversation();
 
     const handleChange = (e) => {
         const value = e.target.value;
         if (currentConversation.tag === value) return;
         setSelectedTag(value);
-        console.log('a',{ ...currentConversation, tag: value })
-        dispatch(updateCurrentConversation({ ...currentConversation, tag: value }));
+        const updatedData = { ...currentConversation, tag: value };
+        dispatch(updateCurrentConversation(updatedData));
+        updateConversationList(updatedData);
     };
 
     const handleDownloadJson = () => {

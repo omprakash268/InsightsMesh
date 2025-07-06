@@ -59,7 +59,6 @@ const Sidebar = () => {
   };
 
   const setActiveConversation = (conversation) => {
-    console.log('conversation',conversation)
     dispatch(triggerClearQuery());
     dispatch(updateCurrentConversation(conversation));
     dispatch(updateNewChatState(false));

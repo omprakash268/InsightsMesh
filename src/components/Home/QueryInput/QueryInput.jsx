@@ -8,22 +8,22 @@ import {
 } from '../../../redux/slices/generalStateSlice';
 import {
   getConversation,
-  setAllConversation,
   updateCurrentConversation
 } from '../../../redux/slices/conversationSlice';
 import { getUserName } from '../../../redux/slices/userSlice';
 import { IoMdSend } from 'react-icons/io';
 import runGenAI from '../../../config/gemini';
 import './QueryInput.css';
-import { saveToDB } from '../../../utils/utils';
+import { useUpdateConversation } from '../../../hook/useUpdateConversation';
 
 const QueryInput = () => {
   const dispatch = useDispatch();
   const selectedPrompt = useSelector(getselectedPromptState);
   const isClearInput = useSelector(getClearInputControl);
-  const { allConversationsList, currentConversation } = useSelector(getConversation);
+  const { currentConversation } = useSelector(getConversation);
   const userName = useSelector(getUserName);
   const [isLoading, setIsLoading] = useState(false);
+  const updateConversationList = useUpdateConversation();
 
   const [query, setQuery] = useState('');
 
@@ -81,17 +81,16 @@ const QueryInput = () => {
     };
 
     dispatch(updateCurrentConversation(updatedConversation));
-    saveToDB(updatedConversation, userName);
     dispatch(updateNewChatState(false));
     setQuery('');
 
-    geminiApiCall(botId, query, updatedConversation, userName);
+    geminiApiCall(botId, query, updatedConversation);
   };
 
-  const geminiApiCall = async (botId, prompt, baseConversation, userName) => {
+  const geminiApiCall = async (botId, prompt, baseConversation) => {
     try {
       const response = await runGenAI(prompt);
-      updateBotContent(botId, response, baseConversation, userName);
+      updateBotContent(botId, response, baseConversation);
     } catch (err) {
       console.error(err);
       updateBotContent(botId, 'Something went wrong !! Please try again.', baseConversation);
@@ -100,7 +99,7 @@ const QueryInput = () => {
     }
   };
 
-  const updateBotContent = (botIdToUpdate, response, baseConversation, userName) => {
+  const updateBotContent = (botIdToUpdate, response, baseConversation) => {
     const updatedBotConversation = {
       ...baseConversation,
       conversation: baseConversation.conversation.map((msg) =>
@@ -108,18 +107,8 @@ const QueryInput = () => {
       )
     };
 
-    const updatedAllConversation = JSON.parse(JSON.stringify(allConversationsList));
-
-    const index = updatedAllConversation.findIndex(conv => conv.id === currentConversation.id);
-    if (index !== -1) {
-      updatedAllConversation[index] = updatedBotConversation;
-    } else {
-      updatedAllConversation.push(updatedBotConversation);
-    }
-
-    dispatch(setAllConversation(updatedAllConversation));
     dispatch(updateCurrentConversation(updatedBotConversation));
-    saveToDB(updatedBotConversation, userName);
+    updateConversationList(updatedBotConversation);
   };
 
 

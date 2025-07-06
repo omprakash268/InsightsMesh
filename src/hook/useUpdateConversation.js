@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { setAllConversation } from '../redux/slices/conversationSlice';
+import { saveToDB } from '../utils/utils';
 
 export const useUpdateConversation = () => {
   const dispatch = useDispatch();
@@ -17,6 +18,7 @@ export const useUpdateConversation = () => {
     }
 
     dispatch(setAllConversation(updatedAllConversation));
+    saveToDB(updatedBotConversation, updatedBotConversation.userName);
   };
 
   return updateConversationList;
