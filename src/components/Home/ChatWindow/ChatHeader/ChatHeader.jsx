@@ -22,7 +22,7 @@ const ChatHeader = () => {
 
     return (
         <div className='chat-header-container flex-item'>
-            <p>{currentConversation?.title}</p>
+            <div className='title text-elipsis' title={currentConversation?.title}>{currentConversation?.title}</div>
             <FaDownload className='download-file' onClick={handleDownloadJson} />
         </div>
     )
