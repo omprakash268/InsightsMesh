@@ -69,7 +69,8 @@ const QueryInput = () => {
         title: query,
         conversation: [],
         tag: '',
-        userName: userName
+        userName: userName,
+        createdAt: Date.now()
       };
 
     const updatedConversation = {
@@ -82,9 +83,8 @@ const QueryInput = () => {
 
     dispatch(updateCurrentConversation(updatedConversation));
     dispatch(updateNewChatState(false));
-    setQuery('');
-
     geminiApiCall(botId, query, updatedConversation);
+    setQuery('');
   };
 
   const geminiApiCall = async (botId, prompt, baseConversation) => {
@@ -117,8 +117,6 @@ const QueryInput = () => {
       generateResponse();
     }
   };
-
-
 
   return (
     <div className='query-input-container flex-item'>

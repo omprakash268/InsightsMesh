@@ -16,7 +16,8 @@ const ChatItem = ({ chat }) => {
                     }
                     {
                         (chat.sender == 'bot' && chat.content != '') ? <TypingMarkdown content={chat.content} /> : null
-                    }{
+                    }
+                    {
                         chat.sender == 'user' ? chat.content : null
                     }
                     <span className="timestamp">

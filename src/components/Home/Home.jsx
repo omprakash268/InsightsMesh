@@ -16,8 +16,11 @@ const Home = () => {
 
   useEffect(() => {
     const listItem = fetchConversationList(userName);
-    
-    dispatch(setAllConversation(listItem.conversationList));
+    if (listItem?.conversationList) {
+      dispatch(setAllConversation(listItem?.conversationList));
+    } else {
+      dispatch(setAllConversation([]));
+    }
   }, [dispatch, userName]);
 
   return (

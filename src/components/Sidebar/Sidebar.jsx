@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTheme, updateTheme } from '../../redux/slices/themeSlicer';
-import { FaPlus } from "react-icons/fa";
-import { GiHamburgerMenu } from "react-icons/gi";
-import { getNewChatState, triggerClearQuery, updateNewChatState } from '../../redux/slices/generalStateSlice';
-import { getConversation, updateCurrentConversation } from '../../redux/slices/conversationSlice';
-import { FaMoon } from "react-icons/fa";
-import { IoSunny } from "react-icons/io5";
-import './Sidebar.css';
+import { FaPlus, FaMoon } from 'react-icons/fa';
+import { GiHamburgerMenu } from 'react-icons/gi';
+import { IoSunny } from 'react-icons/io5';
+import { MdOutlineChat } from 'react-icons/md';
+import {
+  getNewChatState,
+  triggerClearQuery,
+  updateNewChatState,
+} from '../../redux/slices/generalStateSlice';
+import {
+  getConversation,
+  updateCurrentConversation,
+} from '../../redux/slices/conversationSlice';
 import { getUserName } from '../../redux/slices/userSlice';
-import { MdOutlineChat } from "react-icons/md";
+import './Sidebar.css';
 
 const Sidebar = () => {
   const [isExtended, setIsExtended] = useState(true);
@@ -31,7 +37,7 @@ const Sidebar = () => {
   };
 
   const toggleExpand = () => {
-    setIsExtended(prevState => !prevState);
+    setIsExtended((prevState) => !prevState);
   };
 
   const handleNewConversation = () => {
@@ -48,10 +54,11 @@ const Sidebar = () => {
 
     const newConversation = {
       id: Date.now(),
+      createdAt: Date.now(), // ✅ Added timestamp
       title: '',
       conversation: [],
       tag: '',
-      userName: userName
+      userName: userName,
     };
 
     dispatch(triggerClearQuery());
@@ -65,15 +72,20 @@ const Sidebar = () => {
     dispatch(updateNewChatState(false));
   };
 
+  // ✅ Sort conversations by createdAt
   useEffect(() => {
-    setFilteredConversation(allConversationsList);
+    const sortedList = [...allConversationsList].sort((a, b) => b.createdAt - a.createdAt);
+    setFilteredConversation(sortedList);
   }, [allConversationsList]);
 
+  // ✅ Apply filter & keep sorted order
   useEffect(() => {
+    const sortedList = [...allConversationsList].sort((a, b) => b.createdAt - a.createdAt);
+
     if (filterText === '') {
-      setFilteredConversation(allConversationsList);
+      setFilteredConversation(sortedList);
     } else {
-      const filteredItems = allConversationsList.filter((conv) =>
+      const filteredItems = sortedList.filter((conv) =>
         conv?.tag?.toLowerCase().includes(filterText.toLowerCase())
       );
       setFilteredConversation(filteredItems);
@@ -82,13 +94,15 @@ const Sidebar = () => {
 
   return (
     <div className={`sidebar-container ${isExtended ? 'sidebar-width' : 'sidebar-default-width'}`}>
-      <GiHamburgerMenu className={`menu-icon`} onClick={toggleExpand} />
+      <GiHamburgerMenu className="menu-icon" onClick={toggleExpand} />
 
       <button
-        className={`new-chat-container flex-item text-elipsis ${isExtended ? 'new-chat-width' : 'new-chat-default-width'}`}
+        className={`new-chat-container flex-item text-elipsis ${
+          isExtended ? 'new-chat-width' : 'new-chat-default-width'
+        }`}
         onClick={handleNewConversation}
       >
-        <FaPlus className='plus-icon' />
+        <FaPlus className="plus-icon" />
         {isExtended ? 'New Chat' : ''}
       </button>
 
@@ -96,8 +110,8 @@ const Sidebar = () => {
         <div className="filter-container">
           <input
             type="text"
-            id='filter-text-input'
-            className='filter-input'
+            id="filter-text-input"
+            className="filter-input"
             onChange={handleFilterChange}
             value={filterText}
             placeholder="Search by tag..."
@@ -107,18 +121,21 @@ const Sidebar = () => {
 
       {isExtended && (
         <div className="recent-chat-container flex-item">
-          <div className='recent-title-container flex-item'>
-            <MdOutlineChat className='recent-chat-icon'/><span className='recent-title'>Recent</span>
+          <div className="recent-title-container flex-item">
+            <MdOutlineChat className="recent-chat-icon" />
+            <span className="recent-title">Recent</span>
           </div>
           <div className="conversation-list">
-            {filteredConversations && filteredConversations?.map((item) => (
+            {filteredConversations?.map((item) => (
               <div
                 key={item.id}
-                className={`conversation-item-wrapper flex-item ${currentConversation?.id === item.id ? 'selectedConversation' : ''}`}
+                className={`conversation-item-wrapper flex-item ${
+                  currentConversation?.id === item.id ? 'selectedConversation' : ''
+                }`}
                 onClick={() => setActiveConversation(item)}
               >
-                <div className="conversation-item text-elipsis">{item.title}</div>
-                <span className='conversation-tag'>{item.tag}</span>
+                <div className="conversation-item text-elipsis">{item.title || 'Untitled'}</div>
+                <span className="conversation-tag">{item.tag}</span>
               </div>
             ))}
           </div>
@@ -128,9 +145,11 @@ const Sidebar = () => {
       <div className="settings-container">
         <button
           onClick={toggleTheme}
-          className={`flex-item settings-btn text-elipsis ${isExtended ? 'setting-btn-width' : 'setting-btn-min-width'}`}
+          className={`flex-item settings-btn text-elipsis ${
+            isExtended ? 'setting-btn-width' : 'setting-btn-min-width'
+          }`}
         >
-          {theme === 'dark' ? <FaMoon className='theme-icon' /> : <IoSunny className='theme-icon' />}
+          {theme === 'dark' ? <FaMoon className="theme-icon" /> : <IoSunny className="theme-icon" />}
           Theme
         </button>
       </div>

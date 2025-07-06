@@ -1,20 +1,4 @@
-export const loadConversations = (userName = '') => {
-  const data = localStorage.getItem('allConversationList');
-  if (data) {
-    const parsed = JSON.parse(data);
-    const userData = parsed.find(conv => conv.userName === userName);
-    if (userData) {
-      return {
-        conversationList: userData.conversationList,
-        activeConversation: userData.conversationList[userData.conversationList.length - 1] || {
-          id: Date.now(), title: '', conversation: [], tag: '', userName: ''
-        }
-      };
-    }
-  }
-  return { conversationList: [], activeConversation: { id: Date.now(), title: '', conversation: [], tag: '', userName: '' } };
-}
-
+import { decryptData } from "./encryption";
 
 export const getQuickPromptList = () => {
     const prompts = [
@@ -57,7 +41,7 @@ export const fetchConversationList = (userName) => {
     let allConversation = [];
     const data = localStorage.getItem('allConversationList');
     if (data) {
-        const conversationList = JSON.parse(data);
+        const conversationList = decryptData(data);
         const index = conversationList.findIndex((conv) => conv.userName === userName);
         if (index !== -1) {
             allConversation = conversationList[index];

@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { conversationReducer } from "../slices/conversationSlice";
-import { loadConversations } from "../../utils/utils";
 import { themeReducer } from "../slices/themeSlicer";
 import { inputControlReducer, loadingReducer, newChatReducer, selectedPromptReducer } from "../slices/generalStateSlice";
 import { userReducer } from "../slices/userSlice";
+import { loadConversations } from "../../utils/encryption";
 
 
 export const store = configureStore({
