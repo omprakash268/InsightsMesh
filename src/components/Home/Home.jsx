@@ -13,7 +13,7 @@ const Home = () => {
   const isNewChatOpen = useSelector(getNewChatState);
   const userName = useSelector(getUserName);
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
     const listItem = fetchConversationList(userName);
     dispatch(setConversation(listItem.conversationList));

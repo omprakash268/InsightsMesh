@@ -8,7 +8,7 @@ async function run(prompt) {
         model: "gemini-2.5-flash",
         contents: prompt,
     });
-    console.log(response.text);
+    return response.text;
 }
 
 export default run;

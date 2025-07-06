@@ -97,7 +97,7 @@ const Sidebar = () => {
         isExtended ? <div className="recent-chat-container flex-item">
           <span className='recent-title'>Recent</span>
           <div className="conversation-list">
-            {filteredConversations.map((item) => {
+            {filteredConversations?.map((item) => {
               return <div key={item.id} className={`conversation-item-wrapper flex-item ${currentConversation?.id == item.id ? 'selectedConversation' : ''}`} onClick={() => setActiveConversation(item)}>
                 <div className="conversation-item text-elipsis" >
                   {item.title}

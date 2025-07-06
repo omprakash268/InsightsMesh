@@ -46,3 +46,19 @@ export const inputControlSlice = createSlice({
 export const { triggerClearQuery, resetClearQuery } = inputControlSlice.actions;
 export const getClearInputControl = (state) => state.clearInputControl;
 export const inputControlReducer = inputControlSlice.reducer;
+
+
+// loading states
+export const loadingSlice = createSlice({
+    name: 'loading',
+    initialState: { isQueryLoading: false },
+    reducers: {
+        updateQueryLoading: (state) => {
+            state.isQueryLoading = state;
+        }
+    },
+});
+
+export const { updateQueryLoading } = loadingSlice.actions;
+export const getLoadingState = (state) => state.loading;
+export const loadingReducer = loadingSlice.reducer;

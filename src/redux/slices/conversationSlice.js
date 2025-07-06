@@ -1,13 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loadConversations, saveToDB } from "../../utils/utils";
+import { saveToDB } from "../../utils/utils";
 
-const { conversationList, activeConversation } = loadConversations();
 
 export const conversationSlice = createSlice({
     name: 'conversation',
     initialState: {
-        allConversationsList: conversationList,
-        currentConversation: activeConversation
+        allConversationsList: { id: Date.now(), title: '', conversation: [], tag: '', userName: '' },
+        currentConversation: []
     },
     reducers: {
         setConversation: (state, action) => {

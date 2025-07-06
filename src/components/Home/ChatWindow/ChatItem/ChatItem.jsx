@@ -2,14 +2,20 @@ import React from 'react';
 import dayjs from 'dayjs';
 import './ChatItem.css';
 import { FaRobot } from "react-icons/fa";
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 const ChatItem = ({ chat }) => {
     return (
         <div key={chat.id} className={`chat-wrapper`}>
-            <div className={`chat-wrapper-inner flex-item ${chat.sender}`}>
+            <div className={`chat-wrapper-inner flex-item gemini-response ${chat.sender}`}>
                 {chat.sender == 'bot' && <FaRobot className='bot-icon' />}
                 <div className={`${chat.sender}-reply flex-item`}>
-                    {chat.content}
+                    {
+                        chat.sender == 'bot' ? <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                            {chat.content}
+                        </ReactMarkdown> : chat.content
+                    }
                     <span className="timestamp">
                         {dayjs(chat.createdAt).format('DD MMM YYYY, hh:mm A')}
                     </span>
