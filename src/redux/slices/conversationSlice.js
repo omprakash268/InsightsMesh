@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { saveToDB } from "../../utils/utils";
 
 export const conversationSlice = createSlice({
     name: 'conversation',
@@ -19,8 +18,6 @@ export const conversationSlice = createSlice({
         },
         addConversation: (state, action) => {
             state.allConversationsList.push(action.payload);
-            const userName = action.payload.userName;
-            saveToDB(state.allConversationsList, userName);
         },
         updateCurrentConversation: (state, action) => {
             state.currentConversation = action.payload;

@@ -2,9 +2,8 @@ import React from 'react';
 import dayjs from 'dayjs';
 import './ChatItem.css';
 import { FaRobot } from "react-icons/fa";
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
 import DotLoader from './DotLoader/DotLoader';
+import TypingMarkdown from './TypingMarkdown/TypingMarkdown';
 
 const ChatItem = ({ chat }) => {
     return (
@@ -16,9 +15,9 @@ const ChatItem = ({ chat }) => {
                         (chat.sender == 'bot' && chat.content == '') ? <DotLoader /> : null
                     }
                     {
-                        chat.sender == 'bot' ? <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                            {chat.content}
-                        </ReactMarkdown> : chat.content
+                        (chat.sender == 'bot' && chat.content != '') ? <TypingMarkdown content={chat.content} /> : null
+                    }{
+                        chat.sender == 'user' ? chat.content : null
                     }
                     <span className="timestamp">
                         {dayjs(chat.createdAt).format('DD MMM YYYY, hh:mm A')}
