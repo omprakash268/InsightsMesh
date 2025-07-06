@@ -5,13 +5,17 @@ import { getConversation, updateCurrentConversation } from '../../../../redux/sl
 import { FaDownload } from "react-icons/fa6";
 import { useState } from 'react';
 import { useUpdateConversation } from '../../../../hook/useUpdateConversation';
+import { FaEdit } from "react-icons/fa";
+import { FaCheckCircle } from "react-icons/fa";
 
 const ChatHeader = () => {
     const { currentConversation } = useSelector(getConversation);
     const [selectedTag, setSelectedTag] = useState('');
+    const [isEditing, setIsEditing] = useState(false);
+    const [title, setTitle] = useState('');
     const tags = ['Support', 'Sales', 'Internal'];
     const dispatch = useDispatch();
-    const updateConversationList  = useUpdateConversation();
+    const updateConversationList = useUpdateConversation();
 
     const handleChange = (e) => {
         const value = e.target.value;
@@ -36,15 +40,44 @@ const ChatHeader = () => {
         link.click();
     };
 
+    const renameTitle = () => {
+        setIsEditing(true);
+    }
+
+    const onTitleChange = (e) => {
+        const value = e.target.value;
+        setTitle(value);
+    }
+
+    const updateTitle = () => {
+        const updatedData = { ...currentConversation, title: title };
+        dispatch(updateCurrentConversation(updatedData));
+        updateConversationList(updatedData);
+        setIsEditing(false);
+    }
+
     useEffect(() => {
         if (currentConversation?.tag !== selectedTag) {
             setSelectedTag(currentConversation?.tag || '');
         }
+        setTitle(currentConversation.title);
     }, [currentConversation, selectedTag]);
 
     return (
         <div className='chat-header-container flex-item'>
-            <div className='title text-elipsis' title={currentConversation?.title}>{currentConversation?.title}</div>
+            <div className="title-wrapper flex-item">
+                {
+                    isEditing ?
+                        <>
+                            <input id='title-input-1' className='title-input' type="text" value={title} onChange={onTitleChange} />
+                            <FaCheckCircle className='tick-icon' onClick={updateTitle} /></>
+                        :
+                        <>
+                            <div className='title text-elipsis flex-item' title={currentConversation?.title}>{currentConversation?.title} <FaEdit className='edit-icon' onClick={renameTitle} /></div>
+                        </>
+                }
+
+            </div>
             <div className="tag-container flex-item">
                 <div className="dropdown-wrapper">
                     <select

@@ -111,21 +111,30 @@ const QueryInput = () => {
     updateConversationList(updatedBotConversation);
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey && !isLoading) {
+      e.preventDefault();
+      generateResponse();
+    }
+  };
+
+
 
   return (
     <div className='query-input-container flex-item'>
       <div className="input-wrapper">
         <input
           type="text"
-          id='user-text-input'
-          className='user-input'
+          id="user-text-input"
+          className="user-input"
           value={query}
           onChange={handleUserQueryChange}
-          onKeyDown={(e) => e.key === 'Enter' && generateResponse()}
+          onKeyDown={handleKeyDown}
           placeholder="Type your message here..."
           aria-label="Chat input"
         />
         <button
+          disabled={isLoading}
           className="circle-wrapper flex-item"
           onClick={generateResponse}
           aria-label="Send message"

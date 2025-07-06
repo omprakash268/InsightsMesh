@@ -28,7 +28,6 @@
   box-shadow: 0 0 0 2px var(--input-focus-border);
 }
 
-
 .circle-wrapper {
   right: 0.5rem;
   top: 0.25rem;
@@ -44,4 +43,8 @@
 .send-icon {
   font-size: 1.3rem;
   color: var(--text-color);
+}
+
+button:disabled {
+  cursor: not-allowed;
 }

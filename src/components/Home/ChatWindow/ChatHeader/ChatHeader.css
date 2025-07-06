@@ -6,14 +6,34 @@
   box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px;
   border-bottom: 1px solid var(--grey-300);
 }
-.title{
-  max-width: 40%;
+.title-wrapper {
+  height: 100%;
+  max-width: 50%;
+}
+.title {
+  height: 100%;
 }
 
-.download-file{
-    font-size: 1.5rem;
-    color: var(--text-color);
-    cursor: pointer;
+.tick-icon,
+.edit-icon {
+  color: var(--text-color);
+  margin-left: 1rem;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.tick-icon {
+  font-size: 1.5rem !important;
+}
+
+.tick-icon:hover {
+  color: rgb(0, 182, 36);
+}
+
+.download-file {
+  font-size: 1.5rem;
+  color: var(--text-color);
+  cursor: pointer;
 }
 
 .dropdown-wrapper {
@@ -30,7 +50,7 @@
   color: var(--dropdown-text);
   transition: all 0.2s ease;
 }
-.dropdown-select:focus{
+.dropdown-select:focus {
   outline: none;
 }
 
@@ -48,4 +68,25 @@
 .dropdown-select.internal {
   background-color: var(--bg-internal);
   color: var(--text-internal);
+}
+
+.title-input {
+  width: 100%;
+  height: 2rem;
+  border-radius: 2rem;
+  padding: 0.5rem 1rem;
+  background-color: var(--input-bg);
+  color: var(--input-text);
+  border: 1px solid var(--input-border);
+  font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.title-input::placeholder {
+  color: var(--input-placeholder);
+}
+.title-input:focus {
+  outline: none;
+  border-color: var(--input-focus-border);
+  box-shadow: 0 0 0 2px var(--input-focus-border);
 }
