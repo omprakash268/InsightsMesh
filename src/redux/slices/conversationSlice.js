@@ -11,19 +11,20 @@ export const conversationSlice = createSlice({
     reducers: {
         addConversation: (state, action) => {
             state.allConversationsList = action.payload;
-            return state;
         },
         updateCurrentConversation: (state, action) => {
             state.currentConversation = action.payload;
-            let conversation = state.allConversationsList.find((conv) => conv.id === action.payload.id);
-            if (conversation) {
-                conversation = action.payload;
+
+            const index = state.allConversationsList.findIndex(conv => conv.id === action.payload.id);
+
+            if (index !== -1) {
+                // Replace the object at the found index
+                state.allConversationsList[index] = action.payload;
             } else {
-                if (action.payload?.title.length > 0) {
+                if (action.payload?.title?.length > 0) {
                     state.allConversationsList.push(action.payload);
                 }
             }
-            return state;
         }
     }
 });

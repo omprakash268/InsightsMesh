@@ -1,5 +1,5 @@
 export const loadConversations = () => {
-    const activeConversation = { id: Date.now(), title: '', conversation: [] };
+    const activeConversation = { id: Date.now(), title: '', conversation: [], tag: '' };
 
     const conversationList = [
         {
@@ -30,7 +30,8 @@ export const loadConversations = () => {
                     sender: 'bot',
                     createdAt: new Date().getTime()
                 }
-            ]
+            ],
+            tag: 'Internal'
         },
         {
             id: 2,
@@ -60,57 +61,68 @@ export const loadConversations = () => {
                     sender: 'bot',
                     createdAt: new Date().getTime()
                 }
-            ]
+            ],
+            tag: 'Sales'
         },
         {
             id: 3,
             title: "My name is doremon i am super robot what is my special ability ?",
-            conversation: []
+            conversation: [],
+            tag: 'Support'
         },
         {
             id: 4,
             title: "What is react ?",
-            conversation: []
+            conversation: [],
+            tag: 'Support'
         },
         {
             id: 5,
             title: "Explain physics in easy terms ?",
-            conversation: []
+            conversation: [],
+            tag: 'Support'
         },
         {
             id: 6,
             title: "My name is doremon i am super robot what is my special ability ?",
-            conversation: []
+            conversation: [],
+            tag: 'Internal'
         },
         {
             id: 7,
             title: "What is react ?",
-            conversation: []
+            conversation: [],
+            tag: 'Sales'
         },
         {
             id: 8,
             title: "Explain physics in easy terms ?",
-            conversation: []
+            conversation: [],
+            tag: 'Internal'
         },
         {
             id: 9,
             title: "My name is doremon i am super robot what is my special ability ?",
-            conversation: []
+            conversation: [],
+            tag: 'Internal'
         },
         {
             id: 10,
             title: "What is react ?",
-            conversation: []
+            conversation: [],
+            tag: 'Internal'
         },
         {
             id: 11,
             title: "Explain physics in easy terms ?",
-            conversation: []
+            conversation: [],
+            tag: 'Sales'
         },
         {
             id: 13,
             title: "My name is doremon i am super robot what is my special ability ?",
-            conversation: []
+            conversation: [],
+            tag: 'Internal'
         }
     ];
 

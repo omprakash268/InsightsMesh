@@ -1,3 +1,4 @@
+import React from 'react';
 import { useDispatch } from 'react-redux';
 import './QuickPromptCard.css';
 import { updateSelectedPromptState } from '../../../../redux/slices/generalStateSlice';

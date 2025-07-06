@@ -1,10 +1,10 @@
+import React from 'react';
 import ChatHeader from './ChatHeader/ChatHeader';
-import './ChatWindow.css';
 import { useSelector } from 'react-redux';
 import { getConversation } from '../../../redux/slices/conversationSlice';
-
 import { useEffect, useRef } from 'react';
 import ChatItem from './ChatItem/ChatItem';
+import './ChatWindow.css';
 
 const ChatWindow = () => {
     const { currentConversation } = useSelector(getConversation);

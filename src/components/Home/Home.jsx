@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import Welcome from './Welcome/Welcome';
 import './Home.css';
 import QueryInput from './QueryInput/QueryInput';

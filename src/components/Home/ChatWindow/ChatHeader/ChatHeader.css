@@ -15,3 +15,37 @@
     color: var(--text-color);
     cursor: pointer;
 }
+
+.dropdown-wrapper {
+  max-width: 250px;
+}
+
+.dropdown-select {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--dropdown-border);
+  background-color: var(--dropdown-bg);
+  color: var(--dropdown-text);
+  transition: all 0.2s ease;
+}
+.dropdown-select:focus{
+  outline: none;
+}
+
+/* Themed tag options */
+.dropdown-select.support {
+  background-color: var(--bg-support);
+  color: var(--text-support);
+}
+
+.dropdown-select.sales {
+  background-color: var(--bg-sales);
+  color: var(--text-sales);
+}
+
+.dropdown-select.internal {
+  background-color: var(--bg-internal);
+  color: var(--text-internal);
+}

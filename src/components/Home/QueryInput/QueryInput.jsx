@@ -1,4 +1,4 @@
-import './QueryInput.css';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   getselectedPromptState,
@@ -12,6 +12,7 @@ import {
   updateCurrentConversation
 } from '../../../redux/slices/conversationSlice';
 import { IoMdSend } from "react-icons/io";
+import './QueryInput.css';
 
 const QueryInput = () => {
   const dispatch = useDispatch();
@@ -38,9 +39,10 @@ const QueryInput = () => {
 
   const generateResponse = () => {
     if (!query.trim()) return;
-    // Make sure currentConversation exists
+
+    // check if currentConversation exists or not
     if (!currentConversation || !Array.isArray(currentConversation.conversation)) {
-      currentConversation = { id: Date.now(), title: query, conversation: [] };
+      currentConversation = { id: Date.now(), title: query, conversation: [], tag: '' };
     }
 
     const timeStamp = Date.now();
@@ -59,10 +61,9 @@ const QueryInput = () => {
       createdAt: timeStamp + 1
     };
 
-
-
     const updatedConversation = {
       ...currentConversation,
+      tag: 'Internal',
       conversation: [
         ...currentConversation.conversation,
         user,
@@ -73,10 +74,9 @@ const QueryInput = () => {
     if (updatedConversation.title.length == 0) {
       updatedConversation.title = query;
     }
-
     dispatch(updateCurrentConversation(updatedConversation));
     dispatch(updateNewChatState(false));
-    setQuery(''); // clear locally
+    setQuery('');
   };
 
   return (
@@ -84,6 +84,7 @@ const QueryInput = () => {
       <div className="input-wrapper">
         <input
           type="text"
+          id='user-text-input'
           className='user-input'
           onChange={handleUserQueryChange}
           value={query}

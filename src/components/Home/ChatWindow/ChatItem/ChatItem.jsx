@@ -1,3 +1,4 @@
+import React from 'react';
 import dayjs from 'dayjs';
 import './ChatItem.css';
 import { FaRobot } from "react-icons/fa";

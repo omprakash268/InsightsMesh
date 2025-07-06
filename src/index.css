@@ -39,6 +39,19 @@
   --card-text: #1f2937;
   --card-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   --grey-300: #D1D5DB;
+
+  --bg-support: #e0f0ff;
+  --text-support: #0066cc;
+
+  --bg-sales: #e6ffed;
+  --text-sales: #228b22;
+
+  --bg-internal: #fff9db;
+  --text-internal: #b8860b;
+
+  --dropdown-bg: #ffffff;
+  --dropdown-text: #000000;
+  --dropdown-border: #cccccc;
 }
 
 [data-theme="dark"] {
@@ -68,6 +81,19 @@
   --card-text: #f9fafb;
   --card-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
   --grey-300: #4B5563;
+
+  --bg-support: #003355;
+  --text-support: #66ccff;
+
+  --bg-sales: #003300;
+  --text-sales: #66ff99;
+
+  --bg-internal: #4d4d00;
+  --text-internal: #ffdb4d;
+
+  --dropdown-bg: #1e1e1e;
+  --dropdown-text: #ffffff;
+  --dropdown-border: #444444;
 }
 
 body {

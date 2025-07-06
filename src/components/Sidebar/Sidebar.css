@@ -69,11 +69,9 @@
 
 .conversation-list {
   min-height: 2rem;
-  max-height: 30rem;
+  max-height: 27rem;
   width: 100%;
   overflow-y: auto;
-  padding: 0.5rem 0rem;
-  padding-right: 0.2rem;
 }
 
 .selectedConversation {
@@ -87,17 +85,8 @@
 }
 
 .conversation-item {
-  height: 2.5rem;
+  font-size: 0.9rem;
   width: 100%;
-  padding: 0.5rem 1rem;
-  border-radius: 2rem;
-  transition: background-color 0.2s ease;
-}
-
-.conversation-item:hover {
-  background-color: var(--new-chat-hover-bg);
-  color: black;
-  cursor: pointer;
 }
 
 .settings-container {
@@ -127,4 +116,57 @@
 .theme-icon {
   font-size: 1rem;
   color: var(--text-color);
+}
+.conversation-tag {
+  font-size: 0.7rem;
+  background-color: var(--gray-300);
+  font-style: italic;
+  background-color: var(--new-chat-bg);
+  padding: 0rem 0.5rem;
+  border-radius: 0.5rem;
+}
+.conversation-item-wrapper {
+  height: 2.7rem;
+  flex-direction: column;
+  justify-content: flex-start !important;
+  align-items: flex-start !important;
+  border-radius: 2rem;
+  padding: 0.3rem 0.2rem 0.3rem 1rem;
+  margin: 0.5rem 0rem;
+  transition: background-color 0.2s ease;
+  gap: 0.2rem;
+}
+
+.conversation-item-wrapper:hover {
+  background-color: var(--new-chat-hover-bg);
+  color: var(--text-color);
+  cursor: pointer;
+}
+
+.filter-container {
+  width: 100%;
+}
+
+.filter-input {
+  width: 100%;
+  height: 2.5rem;
+  border-radius: 2rem;
+  padding: 0.5rem 1rem;
+  background-color: var(--input-bg);
+  color: var(--input-text);
+  border: 1px solid var(--input-border);
+  font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.filter-input::placeholder {
+  color: var(--input-placeholder);
+}
+.filter-input:focus {
+  outline: none;
+  border-color: var(--input-focus-border);
+  box-shadow: 0 0 0 2px var(--input-focus-border);
+}
+.tag-container {
+  gap: 1rem;
 }
