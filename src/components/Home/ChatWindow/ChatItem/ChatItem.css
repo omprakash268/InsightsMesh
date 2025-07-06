@@ -1,0 +1,89 @@
+.chat-wrapper {
+  width: 100%;
+  gap: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+.chat-wrapper-inner {
+  width: 100%;
+  align-items: flex-start !important;
+  gap: 0.5rem;
+}
+.bot {
+  justify-content: flex-start !important;
+}
+
+.user {
+  justify-content: flex-end !important;
+}
+.bot-icon {
+  margin-top: 0.2rem;
+  font-size: 2rem;
+}
+.user-icon {
+  height: 2.5rem;
+  width: 2.5rem;
+  background-color: black;
+  color: white;
+  border-radius: 100%;
+}
+
+.bot-reply,
+.user-reply {
+  height: 100%;
+  width: 60%;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  flex-direction: column;
+}
+
+.bot-reply {
+  padding: 1rem 2rem;
+  color: var(--text-color);
+  align-items: flex-start !important;
+  border: 1px solid var(--border-color);
+  background-color: var(--message-bot-bg);
+}
+
+.user-reply {
+  color: var(--text-color);
+  align-items: flex-end !important;
+  border: 1px solid var(--border-color);
+  background-color: var(--message-user-bg);
+}
+
+.timestamp{
+    color: var(--text-color);
+    font-style: italic;
+    font-size: 0.8rem;
+    margin-top: 1rem;
+}
+
+/* GeminiResponse.css */
+.gemini-response {
+  color: var(--text-color, #1a1a1a);
+  line-height: 1.7;
+  font-size: 1rem;
+  white-space: pre-wrap;
+}
+
+.gemini-response h1, 
+.gemini-response h2, 
+.gemini-response h3 {
+  margin-top: 1rem;
+  font-weight: 600;
+}
+
+.gemini-response ul {
+  padding-left: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.gemini-response code {
+  background-color: #e2e8f0;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-family: monospace;
+}

@@ -1,0 +1,55 @@
+/* ===============================
+   Dot Typing Animation Container
+=============================== */
+.dot-typing {
+  position: relative;
+  width: 60px;
+  height: 20px;
+}
+
+/* ===============================
+   Dot Styling & Animation Setup
+   - Using ::before, span, ::after for 3 dots
+=============================== */
+.dot-typing::before,
+.dot-typing::after,
+.dot-typing span {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 10px;
+  height: 10px;
+  background-color: var(--dot-color); /* Theme-controlled */
+  border-radius: 50%;
+  animation: blink 1.5s infinite ease-in-out;
+}
+
+/* Left Dot */
+.dot-typing::before {
+  left: 0;
+  animation-delay: 0s;
+}
+
+/* Center Dot */
+.dot-typing span {
+  left: 20px;
+  animation-delay: 0.2s;
+}
+
+/* Right Dot */
+.dot-typing::after {
+  left: 40px;
+  animation-delay: 0.4s;
+}
+
+/* ===============================
+   Blinking Keyframe Animation
+=============================== */
+@keyframes blink {
+  0%, 80%, 100% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+}

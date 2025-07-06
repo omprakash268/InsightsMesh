@@ -1,35 +1,59 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loadConversations } from "../../utils/utils";
 
+// Initial state for conversations
+const initialState = {
+    allConversationsList: [],
+    currentConversation: {
+        id: null,
+        title: '',
+        conversation: [],
+        tag: '',
+        userName: ''
+    }
+};
 
 export const conversationSlice = createSlice({
     name: 'conversation',
-    initialState: {
-        allConversationsList: loadConversations().conversationList,
-        currentConversation: loadConversations().activeConversation
-    },
+    initialState,
     reducers: {
-        addConversation: (state, action) => {
+        /**
+         * Replace the entire conversation list.
+         * @param {object} state 
+         * @param {object} action - Array of conversation objects
+         */
+        setAllConversation: (state, action) => {
             state.allConversationsList = action.payload;
-            return state;
         },
+
+        /**
+         * Append a new conversation to the list.
+         * @param {object} state 
+         * @param {object} action - Single conversation object
+         */
+        addConversation: (state, action) => {
+            state.allConversationsList.push(action.payload);
+        },
+
+        /**
+         * Update the current active conversation.
+         * @param {object} state 
+         * @param {object} action - Conversation object
+         */
         updateCurrentConversation: (state, action) => {
             state.currentConversation = action.payload;
-            let conversation = state.allConversationsList.find((conv) => conv.id === action.payload.id);
-            if (conversation) {
-                conversation = action.payload;
-            } else {
-                if (action.payload?.title.length > 0) {
-                    state.allConversationsList.push(action.payload);
-                }
-            }
-            return state;
         }
     }
 });
 
-export const { addConversation, updateCurrentConversation } = conversationSlice.actions;
+// Actions
+export const {
+    setAllConversation,
+    addConversation,
+    updateCurrentConversation
+} = conversationSlice.actions;
 
+// Selector to access conversation state
 export const getConversation = (state) => state.conversation;
 
+// Reducer export
 export const conversationReducer = conversationSlice.reducer;

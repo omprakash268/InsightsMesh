@@ -1,15 +1,39 @@
+/* ===============================
+   Query Input Section
+   - Positioned at bottom of the chat window
+=============================== */
 .query-input-container {
-  height: 15vh;
   width: 100%;
+  height: 15vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1rem;
+  background-color: var(--chat-bg); /* Optional fallback */
 }
+
+/* ===============================
+   Input Field Wrapper
+   - Centers input and positions icon
+=============================== */
+.input-wrapper {
+  width: 80%;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* ===============================
+   User Text Input
+=============================== */
 .user-input {
   width: 100%;
   height: 3rem;
-  border-radius: 2rem;
   padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  border: 1px solid var(--input-border);
   background-color: var(--input-bg);
   color: var(--input-text);
-  border: 1px solid var(--input-border);
   font-size: 1rem;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
@@ -18,30 +42,47 @@
   color: var(--input-placeholder);
 }
 
-.input-wrapper {
-  width: 80%;
-  position: relative;
-}
-
 .user-input:focus {
   outline: none;
   border-color: var(--input-focus-border);
   box-shadow: 0 0 0 2px var(--input-focus-border);
 }
 
+/* ===============================
+   Send Button Wrapper (circle)
+=============================== */
 .circle-wrapper {
-  right: 0.5rem;
-  top: 0.25rem;
   position: absolute;
-  border-radius: 100%;
-  height: 2.5rem;
+  top: 0.25rem;
+  right: 0.5rem;
   width: 2.5rem;
-  background-color: var(--grey-300);
+  height: 2.5rem;
+  border-radius: 50%;
   border: none;
   outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
 }
 
+.circle-wrapper:hover {
+  background-color: var(--grey-400); /* Optional hover effect */
+}
+
+/* ===============================
+   Send Icon Styling
+=============================== */
 .send-icon {
   font-size: 1.3rem;
-  color: var(--text-color);
+  color: var(--chat-bg);
+}
+
+/* ===============================
+   Disabled Button Handling
+=============================== */
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
 }

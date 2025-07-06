@@ -1,23 +1,29 @@
-import './QueryInput.css';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   getselectedPromptState,
   getClearInputControl,
   resetClearQuery,
-  updateNewChatState
+  updateNewChatState,
 } from '../../../redux/slices/generalStateSlice';
-import { useState, useEffect } from 'react';
 import {
   getConversation,
   updateCurrentConversation
 } from '../../../redux/slices/conversationSlice';
-import { IoMdSend } from "react-icons/io";
+import { IoMdSend } from 'react-icons/io';
+import runGenAI from '../../../config/gemini';
+import './QueryInput.css';
+import { useUpdateConversation } from '../../../hook/useUpdateConversation';
+import { getUsername } from '../../../redux/slices/authSlice';
 
 const QueryInput = () => {
   const dispatch = useDispatch();
   const selectedPrompt = useSelector(getselectedPromptState);
   const isClearInput = useSelector(getClearInputControl);
-  let { currentConversation } = useSelector(getConversation);
+  const { currentConversation } = useSelector(getConversation);
+  const { userName } = useSelector(getUsername);
+  const [isLoading, setIsLoading] = useState(false);
+  const updateConversationList = useUpdateConversation();
 
   const [query, setQuery] = useState('');
 
@@ -37,46 +43,79 @@ const QueryInput = () => {
   };
 
   const generateResponse = () => {
-    if (!query.trim()) return;
-    // Make sure currentConversation exists
-    if (!currentConversation || !Array.isArray(currentConversation.conversation)) {
-      currentConversation = { id: Date.now(), title: query, conversation: [] };
-    }
-
+    if (!query.trim() || isLoading) return;
+    setIsLoading(true);
     const timeStamp = Date.now();
+    const botId = `bot-${timeStamp}`;
 
-    const user = {
+    const userMsg = {
       id: timeStamp,
       content: query,
       sender: 'user',
       createdAt: timeStamp
     };
 
-    const bot = {
-      id: timeStamp + 1,
-      content: 'Service is unavailable.',
+    const botMsg = {
+      id: botId,
+      content: '',
       sender: 'bot',
       createdAt: timeStamp + 1
     };
 
-
+    const baseConversation = currentConversation && Array.isArray(currentConversation.conversation)
+      ? currentConversation
+      : {
+        id: Date.now(),
+        title: query,
+        conversation: [],
+        tag: '',
+        userName: userName,
+        createdAt: Date.now()
+      };
 
     const updatedConversation = {
-      ...currentConversation,
-      conversation: [
-        ...currentConversation.conversation,
-        user,
-        bot
-      ]
+      ...baseConversation,
+      tag: 'Internal',
+      userName: userName,
+      title: baseConversation.title || query,
+      conversation: [...baseConversation.conversation, userMsg, botMsg]
     };
-
-    if (updatedConversation.title.length == 0) {
-      updatedConversation.title = query;
-    }
 
     dispatch(updateCurrentConversation(updatedConversation));
     dispatch(updateNewChatState(false));
-    setQuery(''); // clear locally
+    geminiApiCall(botId, query, updatedConversation);
+    setQuery('');
+  };
+
+  const geminiApiCall = async (botId, prompt, baseConversation) => {
+    try {
+      const response = await runGenAI(prompt);
+      updateBotContent(botId, response, baseConversation);
+    } catch (err) {
+      console.error(err);
+      updateBotContent(botId, 'Something went wrong !! Please try again.', baseConversation);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const updateBotContent = (botIdToUpdate, response, baseConversation) => {
+    const updatedBotConversation = {
+      ...baseConversation,
+      conversation: baseConversation.conversation.map((msg) =>
+        msg.id === botIdToUpdate ? { ...msg, content: response } : msg
+      )
+    };
+
+    dispatch(updateCurrentConversation(updatedBotConversation));
+    updateConversationList(updatedBotConversation);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey && !isLoading) {
+      e.preventDefault();
+      generateResponse();
+    }
   };
 
   return (
@@ -84,12 +123,20 @@ const QueryInput = () => {
       <div className="input-wrapper">
         <input
           type="text"
-          className='user-input'
-          onChange={handleUserQueryChange}
+          id="user-text-input"
+          className="user-input"
           value={query}
+          onChange={handleUserQueryChange}
+          onKeyDown={handleKeyDown}
           placeholder="Type your message here..."
+          aria-label="Chat input"
         />
-        <button className="circle-wrapper flex-item" onClick={generateResponse}>
+        <button
+          disabled={isLoading}
+          className="circle-wrapper flex-item"
+          onClick={generateResponse}
+          aria-label="Send message"
+        >
           <IoMdSend className='send-icon' />
         </button>
       </div>
