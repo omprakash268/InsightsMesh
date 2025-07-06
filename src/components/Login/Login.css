@@ -1,0 +1,48 @@
+.login-container {
+  background-color: var(--bg-color);
+  width: 100vw;
+  height: 100vh;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ===============================
+   User Email Input
+=============================== */
+.email-input {
+  width: 40%;
+  height: 3rem;
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  border: 1px solid var(--input-border);
+  background-color: var(--input-bg);
+  color: var(--input-text);
+  font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.email-input::placeholder {
+  color: var(--input-placeholder);
+}
+
+.email-input:focus {
+  outline: none;
+  border-color: var(--input-focus-border);
+  box-shadow: 0 0 0 2px var(--input-focus-border);
+}
+
+.login-btn {
+  width: 10rem;
+  height: 3rem;
+  border-radius: 2rem;
+  outline: none;
+  border: none;
+  background-color: var(--new-chat-bg);
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  color: var(--text-color);
+}
+
+.login-btn:hover {
+  background-color: var(--input-focus-border);
+}

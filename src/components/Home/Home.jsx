@@ -1,34 +1,45 @@
 import React, { useEffect } from 'react';
-import Welcome from './Welcome/Welcome';
-import './Home.css';
-import QueryInput from './QueryInput/QueryInput';
-import ChatWindow from './ChatWindow/ChatWindow';
 import { useDispatch, useSelector } from 'react-redux';
+
+import Welcome from './Welcome/Welcome';
+import ChatWindow from './ChatWindow/ChatWindow';
+import QueryInput from './QueryInput/QueryInput';
+
+import './Home.css';
+
 import { getNewChatState } from '../../redux/slices/generalStateSlice';
-import { fetchConversationList } from '../../utils/utils';
-import { getUserName } from '../../redux/slices/userSlice';
 import { setAllConversation } from '../../redux/slices/conversationSlice';
 
-const Home = () => {
-  const isNewChatOpen = useSelector(getNewChatState);
-  const userName = useSelector(getUserName);
-  const dispatch = useDispatch();
+import { fetchConversationList } from '../../utils/utils';
+import { getUsername } from '../../redux/slices/authSlice';
+import { useNavigate } from 'react-router-dom';
 
+const Home = () => {
+  const dispatch = useDispatch();
+  const isNewChatOpen = useSelector(getNewChatState);
+  const { userName } = useSelector(getUsername);
+  const navigate = useNavigate();
+
+
+  // Load conversation list from local storage on mount
   useEffect(() => {
-    const listItem = fetchConversationList(userName);
-    if (listItem?.conversationList) {
-      dispatch(setAllConversation(listItem?.conversationList));
-    } else {
-      dispatch(setAllConversation([]));
+    if (!userName) {
+      navigate('/login');
     }
+    const listItem = fetchConversationList(userName);
+    const userConversations = listItem?.conversationList || [];
+    dispatch(setAllConversation(userConversations));
   }, [dispatch, userName]);
 
   return (
     <div className='home-container'>
+      {/* Show welcome screen on new chat, otherwise show chat window */}
       {isNewChatOpen ? <Welcome /> : <ChatWindow />}
+
+      {/* Query input bar is persistent */}
       <QueryInput />
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

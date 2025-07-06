@@ -10,18 +10,18 @@ import {
   getConversation,
   updateCurrentConversation
 } from '../../../redux/slices/conversationSlice';
-import { getUserName } from '../../../redux/slices/userSlice';
 import { IoMdSend } from 'react-icons/io';
 import runGenAI from '../../../config/gemini';
 import './QueryInput.css';
 import { useUpdateConversation } from '../../../hook/useUpdateConversation';
+import { getUsername } from '../../../redux/slices/authSlice';
 
 const QueryInput = () => {
   const dispatch = useDispatch();
   const selectedPrompt = useSelector(getselectedPromptState);
   const isClearInput = useSelector(getClearInputControl);
   const { currentConversation } = useSelector(getConversation);
-  const userName = useSelector(getUserName);
+  const { userName } = useSelector(getUsername);
   const [isLoading, setIsLoading] = useState(false);
   const updateConversationList = useUpdateConversation();
 
