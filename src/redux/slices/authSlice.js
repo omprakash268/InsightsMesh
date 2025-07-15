@@ -1,14 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { getUserFromStorage } from '../../utils/utils';
 
-const initialState = {
-  userName: null,
-  token: null,
-  isAuthenticated: false
-};
+
 
 const authSlice = createSlice({
   name: 'auth',
-  initialState,
+  initialState: getUserFromStorage(),
   reducers: {
     login: (state, action) => {
       state.userName = action.payload.username;

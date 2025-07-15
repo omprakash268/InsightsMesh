@@ -9,7 +9,6 @@ import {
     newChatReducer,
     selectedPromptReducer
 } from "../slices/generalStateSlice";
-import { userReducer } from "../slices/userSlice";
 
 // Utilities
 import { loadConversations } from "../../utils/encryption";
@@ -31,7 +30,6 @@ const initialData = loadConversations() || {
 // Configure Redux store
 export const store = configureStore({
     reducer: {
-        user: userReducer,
         conversation: conversationReducer,
         theme: themeReducer,
         newChat: newChatReducer,

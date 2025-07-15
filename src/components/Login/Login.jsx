@@ -12,8 +12,11 @@ const Login = () => {
   const handleLogin = () => {
     const fakeToken = Date.now().toString(); // generate dummy token
     dispatch(login({ username, token: fakeToken }));
-    localStorage.setItem('auth_token', fakeToken);
-    localStorage.setItem('username', username);
+    const userInfo = {
+      username,
+      authToken:fakeToken
+    }
+    localStorage.setItem('userData',JSON.stringify(userInfo));
     navigate('/');
   };
 

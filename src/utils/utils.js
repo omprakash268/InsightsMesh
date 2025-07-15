@@ -67,3 +67,21 @@ export const storedTheme = () => {
   }
   return 'light';
 }
+
+
+export const getUserFromStorage = () => {
+  const initialState = {
+    userName: null,
+    token: null,
+    isAuthenticated: false
+  };
+  const user = localStorage.getItem("userData");
+  if (user) {
+    const data = JSON.parse(user);
+    initialState.userName = data.username;
+    initialState.token = data.authToken;
+    initialState.isAuthenticated = true;
+  }
+
+  return initialState;
+}

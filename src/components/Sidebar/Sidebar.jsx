@@ -34,9 +34,10 @@ import {
   MdOutlineChat,
   MdDeleteForever
 } from 'react-icons/md';
+import { ImExit } from "react-icons/im";
 
 import './Sidebar.css';
-import { getUsername } from '../../redux/slices/authSlice';
+import { getUsername, logout } from '../../redux/slices/authSlice';
 
 const Sidebar = () => {
   const dispatch = useDispatch();
@@ -59,6 +60,12 @@ const Sidebar = () => {
     dispatch(updateTheme(newTheme));
     localStorage.setItem('user-theme', newTheme);
   };
+
+  /** Logut user handler */
+  const logoutUser = () => {
+    localStorage.removeItem('userData');
+    dispatch(logout());
+  }
 
   /** Sidebar expand/collapse toggle */
   const toggleExpand = () => {
@@ -198,7 +205,7 @@ const Sidebar = () => {
       )}
 
       {/* Theme Toggle Button */}
-      <div className="settings-container">
+      <div className="settings-container flex-item">
         <button
           onClick={toggleTheme}
           className={`flex-item settings-btn text-elipsis ${isExtended ? 'setting-btn-width' : 'setting-btn-min-width'}`}
@@ -211,6 +218,7 @@ const Sidebar = () => {
           )}
           {isExtended && 'Theme'}
         </button>
+        <ImExit className={`logout-btn ${!isExtended ? 'logout-margin-left' : ''}`} onClick={logoutUser} />
       </div>
     </div>
   );

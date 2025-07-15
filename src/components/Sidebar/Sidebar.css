@@ -223,6 +223,16 @@
   box-shadow: 0 0 0 2px var(--input-focus-border);
 }
 
+/* ========== Logout ========== */
+.logout-btn{
+  color: var(--text-color);
+  cursor: pointer;
+}
+
+.logout-margin-left{
+  margin-left: 1rem;
+}
+
 /* ========== Tags ========== */
 .tag-container {
   display: flex;
